@@ -1,0 +1,34 @@
+.mat-badge-content {
+    background: #00A9E0;
+}
+
+.circle {
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    padding: 12px;
+    /* width: 16px;
+    height: 16px;
+    padding: 4px; */
+    background: #00A9E0;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 18px;
+}
+
+table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.mat-card {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.under-construction {
+    background: #A2AAAD;
+    color: grey;
+}

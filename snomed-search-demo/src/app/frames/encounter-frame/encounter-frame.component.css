@@ -1,0 +1,41 @@
+table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.mat-badge-content {
+    background: #00A9E0;
+}
+
+.circle {
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    padding: 12px;
+    /* width: 16px;
+    height: 16px;
+    padding: 4px; */
+    background: #00A9E0;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: bottom;
+}
+
+.mat-mini-fab {
+    background-color: #424463;
+}
+
+.mat-raised-button {
+    background-color: #424463;
+    color: white;
+}
+
+::ng-deep .mat-checkbox-checked .mat-checkbox-background, .mat-checkbox-indeterminate .mat-checkbox-background {
+    background-color: #00A9E0 !important;
+  }
+  
+  ::ng-deep .mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+    background-color: #00A9E0 !important;
+  }

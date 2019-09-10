@@ -1,0 +1,80 @@
+/* .mat-badge-content {
+    background: #00A9E0;
+} */
+
+table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.mat-icon-button { 
+    color: #00A9E0;    
+}
+
+.circle {
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    padding: 12px;
+    /* width: 16px;
+    height: 16px;
+    padding: 4px; */
+    background: #00A9E0;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: bottom;
+}
+
+.rb-circle {
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    padding: 12px;
+    background: #00A9E0;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: 10px;
+    /* vertical-align: bottom; */
+}
+
+.mat-radio-button{
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.ng-autocomplete {
+    margin-top: 15px;
+    margin-bottom: 35px;
+    width: inherit;
+} 
+
+.mat-raised-button {
+    background-color: #424463;
+    color: white;
+}
+
+.mat-mini-fab {
+    background-color: #424463;
+}
+
+.mat-badge-content {
+    background: #00A9E0;
+}
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+    background-color:#00A9E0 !important; /*click effect color change*/
+} 
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+    background-color:#00A9E0!important;   /*inner circle color change*/
+}
+
+::ng-deep.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color:#00A9E0!important; /*outer ring color change*/
+}
+
+

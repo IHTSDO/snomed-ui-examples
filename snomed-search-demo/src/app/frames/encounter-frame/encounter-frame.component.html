@@ -1,0 +1,179 @@
+<div [formGroup]="encounterForm" class="container" fxLayout="column" fxLayoutGap="20px">
+
+    <!-- Date	Date	
+    Reason For Encounter	SNOMED type search	< 404684003 OR < 71388002 OR < 243796009 OR < 272379006
+    
+    Diagnosis	SNOMED type search	< 404684003
+    Procedure	SNOMED type search	< 71388002
+    Notes	Free text	 -->
+    
+  <mat-card class="patient-details-card">
+    <mat-card-header>
+      <div mat-card-avatar><mat-icon>add</mat-icon></div>
+      <mat-card-title>Add New Encounter</mat-card-title>
+      <!-- <mat-card-subtitle>Personal details of the Patient</mat-card-subtitle> -->
+    </mat-card-header>
+    <mat-card-content>
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+          <mat-form-field appearance="outline" fxFlex>
+            <mat-label>Date/Time</mat-label>
+            <input matInput value={{timestamp}} [readonly]="true"/>
+          </mat-form-field>
+      </div>
+
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field appearance="outline" fxFlex>
+          <input type="text" placeholder="Reason for Encounter" aria-label="Reason for Encounter" matInput formControlName="reasonForEncounter" [matAutocomplete]="autoReasonForEncounter">
+          <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>    
+          <mat-autocomplete #autoReasonForEncounter="matAutocomplete" [displayWith]="displayFn.bind(this)">
+            <mat-option *ngFor="let option of filteredEncounterReasonValues" [value]="option">
+              {{option.display}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on reason for encounter"
+          [mdePopoverTriggerFor]="encounterReasonPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+          <b>i</b>
+        </button>
+        <mde-popover #encounterReasonPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+          <mat-card style="max-width: 600px">
+            <mat-card-content>
+              To Be Completed
+          </mat-card-content>
+          </mat-card>
+        </mde-popover>
+      </div>
+   
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+          <mat-checkbox formControlName="boosted">boost preferred</mat-checkbox>
+    
+          <mat-form-field appearance="outline" fxFlex>
+            <input type="text" placeholder="Diagnosis" aria-label="Diagnosis" matInput formControlName="diagnosis" [matAutocomplete]="autoDiagnosis">
+            <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+            <mat-autocomplete #autoDiagnosis="matAutocomplete" [displayWith]="displayFn.bind(this)">
+              <mat-option *ngFor="let option of filteredDiagnosisValues" [value]="option">
+                {{option.display}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on diagnosis"
+            [mdePopoverTriggerFor]="diagnosisPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+            <b>i</b>
+          </button>
+          <mde-popover #diagnosisPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+            <mat-card style="max-width: 600px">
+              <mat-card-content>
+                To Be Completed
+            </mat-card-content>
+            </mat-card>
+          </mde-popover>
+          <mat-form-field appearance="outline" fxFlex>
+            <input type="text" placeholder="Diagnosis Note" aria-label="Diagnosis Note" matInput formControlName="diagnosisNote">
+          </mat-form-field>
+      </div>
+    
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field appearance="outline" fxFlex>
+          <input type="text" placeholder="Procedure" aria-label="Procedure" matInput formControlName="procedure" [matAutocomplete]="autoProcedure">
+          <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+          <mat-autocomplete #autoProcedure="matAutocomplete" [displayWith]="displayFn.bind(this)" (optionSelected)='procedureSelected($event.option.value)'>
+            <mat-option *ngFor="let option of filteredProcedureValues" [value]="option">
+              {{option.display}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>        
+        <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on procedure"
+          [mdePopoverTriggerFor]="procedurePopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+          <b>i</b>
+        </button>
+        <mde-popover #procedurePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+          <mat-card style="max-width: 600px">
+            <mat-card-content>
+              To Be Completed
+            </mat-card-content>
+          </mat-card>
+        </mde-popover>
+        <mat-form-field appearance="outline"  fxFlex>
+          <mat-label>Laterality</mat-label>
+          <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+          <select matNativeControl formControlName="laterality" [compareWith]="compareLaterality">
+            <option *ngFor="let option of lateralityValues" [ngValue]="option">
+              {{option.display}}
+            </option>
+          </select>
+        </mat-form-field>
+        <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on laterality"
+          [mdePopoverTriggerFor]="lateralityPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+          <b>i</b>
+        </button>
+        <mde-popover #lateralityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+          <mat-card style="max-width: 600px">
+            <mat-card-content>
+              To Be Completed
+            </mat-card-content>
+          </mat-card>
+        </mde-popover>
+      </div>
+    
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+          <mat-form-field appearance="outline" [style.fontSize.px]=12 fxFlex>
+              <mat-label>Encounter Notes</mat-label>
+              <textarea matInput formControlName="encounterNote"></textarea>
+          </mat-form-field>
+      </div>
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <button mat-raised-button (click)="onSaveEncounter()">
+          <mat-icon>add</mat-icon> 
+            Add
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar><mat-icon>supervisor_account</mat-icon></div>
+      <mat-card-title>Previous Encounters</mat-card-title>
+    </mat-card-header>
+    <mat-card-content fxLayout="column">
+
+      <table mat-table fxFlex [dataSource]="encounterDataSource" class="mat-elevation-z8" #encounterTable>
+        <ng-container matColumnDef="reasonForEncounterDisplay">
+          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Reason for Encounter </th>
+          <td mat-cell *matCellDef="let encounter" matTooltip="SNOMED CT code: {{encounter.reasonForEncounterCode}}"> {{encounter.reasonForEncounterDisplay}} </td>
+        </ng-container>
+   
+        <ng-container matColumnDef="diagnosisDisplay">
+          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Diagnosis </th>
+          <td mat-cell *matCellDef="let encounter" matTooltip="SNOMED CT code: {{encounter.diagnosisCode}}"> {{encounter.diagnosisDisplay}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="diagnosisNote">
+          <th mat-header-cell *matHeaderCellDef> Diagnosis Note </th>
+          <td mat-cell *matCellDef="let encounter"> {{encounter.diagnosisNote}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="procedureDisplay">
+          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Procedure </th>
+          <td mat-cell *matCellDef="let encounter" matTooltip="SNOMED CT code: {{encounter.procedureCode}}"> {{encounter.procedureDisplay}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="lateralityDisplay">
+          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Laterality </th>
+          <td mat-cell *matCellDef="let encounter" matTooltip="SNOMED CT code: {{encounter.lateralityCode}}"> {{encounter.lateralityDisplay}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="encounterNote">
+          <th mat-header-cell *matHeaderCellDef> Encounter Note </th>
+          <td mat-cell *matCellDef="let encounter"> {{encounter.encounterNote}} </td> 
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedEncounterColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedEncounterColumns;"></tr>
+      </table> 
+  
+  
+    </mat-card-content>
+  </mat-card>
+
+</div>    

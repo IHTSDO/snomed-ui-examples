@@ -1,0 +1,130 @@
+<div [formGroup]="patientDetailsForm" class="container" fxLayout="column" fxLayoutGap="20px">
+    
+  <mat-card class="patient-details-card">
+    <mat-card-header>
+      <div mat-card-avatar><mat-icon>person</mat-icon></div>
+      <mat-card-title>Patient Details</mat-card-title>
+      <!-- <mat-card-subtitle>Personal details of the Patient</mat-card-subtitle> -->
+    </mat-card-header>
+    <mat-card-content>
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field appearance="outline"  fxFlex>
+          <mat-label>Patient ID</mat-label>
+          <input matInput value="123456" [readonly]="true"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex>
+            <mat-label>National ID</mat-label>
+            <input matInput value="987654321" [readonly]="true"/>
+          </mat-form-field>
+      </div>
+    
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field appearance="outline" fxFlex>
+            <mat-label>Name</mat-label>
+            <input matInput value="Mr Snowy Medd" [readonly]="true"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline"  fxFlex>
+            <mat-label>DOB</mat-label>
+            <input matInput value="2001-08-28" [readonly]="true"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Sex</mat-label>
+          <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+          <select matNativeControl formControlName="sex" [compareWith]="compareSex">
+            <option *ngFor="let option of sexValues" [ngValue]="option">{{option.display}}</option>
+          </select>
+        </mat-form-field>
+        <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on sex"
+          [mdePopoverTriggerFor]="sexPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+          <b>i</b>
+        </button>
+        <mde-popover #sexPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+          <mat-card style="max-width: 600px">
+            <mat-card-content>
+              To Be Completed
+          </mat-card-content>
+          </mat-card>
+        </mde-popover>
+      </div>
+    
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field appearance="outline"  fxFlex>
+            <mat-label>Address</mat-label>
+            <input matInput value="100 Snomed Lane, SNOMEDVILLE, 4000, SNOMEDLAND" size="200" [readonly]="true"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline"  fxFlex>
+            <mat-label>Email</mat-label>
+            <input matInput value="snowy@snomed.org"  [readonly]="true"/>
+        </mat-form-field>
+      </div>
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field appearance="outline"  fxFlex>
+            <mat-label>Mobile Telephone</mat-label>
+            <input matInput value="123 456 789" [readonly]="true"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline"  fxFlex>
+            <mat-label>Home Telephone</mat-label>
+            <input matInput value="(987) 654 321" [readonly]="true"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline"  fxFlex>
+            <mat-label>Work Telephone</mat-label>
+            <input matInput value="(987) 123 456" [readonly]="true"/>
+        </mat-form-field>
+      </div>
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field appearance="outline"  fxFlex>
+            <mat-label>Preferred Language</mat-label>
+            <input matInput value="Snomed" [readonly]="true"/>
+        </mat-form-field>
+      </div>
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field appearance="outline"  fxFlex>
+            <mat-label>Blood Group</mat-label>
+            <input matInput value="A+" [readonly]="true"/>
+        </mat-form-field>
+      </div>
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field appearance="outline"  fxFlex>
+          <mat-label>Smoking Status</mat-label>
+          <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+          <select matNativeControl formControlName="smokingStatus">
+            <option *ngFor="let option of smokingStatusValues" [value]="option">
+              {{option.display}}
+            </option>
+          </select>
+        </mat-form-field>
+        <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on smoking status"
+          [mdePopoverTriggerFor]="smokingStatusPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+          <b>i</b>
+        </button>
+        <mde-popover #smokingStatusPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+          <mat-card style="max-width: 600px">
+            <mat-card-content>
+              To be completed
+            </mat-card-content>
+          </mat-card>
+        </mde-popover>
+        <div fxFlex>
+          <span matPrefix matTooltip="This field uses SNOMED CT" class="rb-circle"><b>S</b></span>
+          <label class="mat-typography">Smoker Type: </label>
+          <mat-checkbox *ngFor="let option of smokerTypeValues" matTooltip="SNOMED CT code: {{option.value}}">
+            {{option.display}}
+          </mat-checkbox>
+          <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on smoker type"
+            [mdePopoverTriggerFor]="smokerTypePopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+            <b>i</b>
+          </button>
+          <mde-popover #smokerTypePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+            <mat-card style="max-width: 600px">
+              <mat-card-content>
+                To be completed
+              </mat-card-content>
+            </mat-card>
+          </mde-popover>
+        </div>
+    
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+</div>    

@@ -1,0 +1,21 @@
+.mat-form-field {
+    margin-top: 20px;
+}
+
+.mat-radio-button{
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.ng-autocomplete {
+    margin-top: 15px;
+    margin-bottom: 35px;
+    width: inherit;
+    /* width:100%;
+    max-width: 400px;
+    height: 200px;
+    display: table;
+    margin: 0 auto;
+    */
+} 
+  

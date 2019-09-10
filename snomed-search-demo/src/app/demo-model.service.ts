@@ -1,0 +1,147 @@
+import { Injectable } from '@angular/core';
+
+export interface SnomedConcept {
+  value: string;
+  display: string;
+}
+
+export interface Encounter {
+
+}
+
+export interface Medication {
+  name: string;
+  strength: string;
+  form: string;
+  route: string;
+  freq: string;
+  duration: string;
+  instruction: string;
+  clinicalIndication: string;
+  comment: string;
+}
+
+export interface Reaction {
+  substanceCode: string;
+  substanceDisplay: string;
+  criticalityCode: string;
+  criticalityDisplay: string;
+  manifestationCode: string;
+  manifestationDisplay: string; 
+  verificationStatus: string; 
+  comment: string;
+}
+
+export interface Vaccination {
+  name: string;
+  brandName: string;
+  substance: string;
+  date: string;
+}
+
+export interface Problem {
+  code: string;
+  codeDisplay: string;
+  date: string;
+}
+
+export interface Investigation {
+  test: string;
+  date: string;
+  result: string;
+}
+
+export interface Procedure {
+  code: string;
+  codeDisplay: string;
+  date: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DemoModelService {
+
+  reactions: Reaction[] = [
+    {substanceCode: '764146007', substanceDisplay: 'Penicillin', criticalityCode: '75540009', criticalityDisplay: 'High', manifestationCode: '271807003', manifestationDisplay: 'Rash', verificationStatus: 'confirmed', comment: 'childhood'},
+  ];
+
+  procedures: Procedure[] = [
+    {code: '80146002', codeDisplay: 'Appendectomy', date: '2010-06-04'}
+  ];
+
+  problems: Problem[] = [
+    {code: '195967001', codeDisplay: 'Asthma', date: '1990-08-08'},
+  ];
+
+  encounters: Encounter[] = [
+  ];
+
+  constructor() { }
+
+  getEncounters() : Encounter[] {
+
+    return this.encounters;
+
+  }
+
+  addEncounter(rfeCode: string, rfeDisplay: string, procCode: string, procDisplay: string, 
+    diagCode: string, diagDisplay: string, diagNote: string, latCode: string, latDisplay: string, enctrNote: string) {
+
+    this.encounters.push(
+      {
+        reasonForEncounterCode: rfeCode, reasonForEncounterDisplay: rfeDisplay, 
+        procedureCode: procCode, procedureDisplay: procDisplay,
+        diagnosisCode: diagCode, diagnosisDisplay: diagDisplay,
+        diagnosisNote: diagNote,
+        lateralityCode: latCode, lateralityDisplay: latDisplay,
+        encounterNote: enctrNote
+      }
+    );
+  }
+
+  getReactions(criticalityCode: string) : Reaction[] {
+
+    if (!criticalityCode) {
+      return this.reactions;
+    }
+
+    var filteredReactions : Reaction[] = [];
+    this.reactions.forEach(function(reaction) {
+      if (reaction.criticalityCode === criticalityCode) {
+        filteredReactions.push(reaction);
+      }
+    })
+
+    return filteredReactions;
+  }
+
+  addReaction(subCode : string, subDisplay: string, critCode: string, critDisplay: string, manifestCode: string, manifestDisplay, verStatus: string, cmt: string) {
+    
+    console.log("addReaction called");
+    this.reactions.push(
+      {substanceCode: subCode, substanceDisplay: subDisplay, 
+      criticalityCode: critCode, criticalityDisplay: critDisplay, 
+      manifestationCode: manifestCode, manifestationDisplay: manifestDisplay, 
+      verificationStatus: verStatus, 
+      comment: cmt}
+    )
+    console.log("reactions now", this.reactions);
+  }
+
+  getProcedures() : Procedure[] {
+    return this.procedures;
+  }
+
+  addProcedure(procCode, procDisplay: string, procDate: string) {
+    this.procedures.push({code: procCode, codeDisplay: procDisplay, date: procDate});
+  }
+
+  getProblems() : Problem[] {
+    return this.problems;
+  }
+
+  addProblem(problemCode : string, problemDisplay: string, problemDate: string) {
+    this.problems.push({code: problemCode, codeDisplay: problemDisplay, date: problemDate});
+  }
+}

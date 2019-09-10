@@ -1,0 +1,92 @@
+.mat-card {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+button {
+    margin-left: 20px;
+}
+
+.mat-badge-content {
+    background: #00A9E0;
+}
+
+.mat-toolbar {
+    background: #A2AAAD;
+    height: 80px;
+}
+
+.patientDetails {
+    background-color: #00A9E0;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+}
+
+.allergyDetails {
+    background-color: rosybrown;
+    position: fixed;
+    top: 130px;
+    left: 0;
+    right: 0;
+}
+
+.centred-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mat-sidenav-container {
+    position: absolute;
+    top: 180px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.mat-sidenav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mat-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.mat-list-item {
+    font-size: 14px;
+    /* height: 12px !important; */
+    color: white;
+}
+
+.mat-button-toggle {
+    background-color: #424463;
+    color: #A2AAAD;
+}
+
+.mat-button-toggle:not([disabled]) {
+    color: white;
+}
+
+.mat-button-focus-overlay {
+    background-color: white;
+}
+
+.mat-button-toggle-checked {
+    background-color: #A2AAAD;
+}
+
+.mat-drawer {
+    background-color: #424463;
+}

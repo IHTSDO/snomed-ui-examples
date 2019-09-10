@@ -1,0 +1,191 @@
+<div [formGroup]="reactionForm" class="container" fxLayout="column" fxLayoutGap="20px">
+    
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar><mat-icon>add</mat-icon></div>
+      <mat-card-title>Add New Allergy / Adverse Reaction</mat-card-title>
+      <!-- <mat-card-subtitle>Personal details of the Patient</mat-card-subtitle> -->
+    </mat-card-header>
+    <mat-card-content>
+
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field appearance="outline" fxFlex>
+          <input type="text" placeholder="Substance" aria-label="Substance" matInput formControlName="substance" [matAutocomplete]="autoSubstance">
+          <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+          <mat-autocomplete #autoSubstance="matAutocomplete" [displayWith]="displayFn.bind(this)">
+            <mat-option *ngFor="let option of filteredSubstanceValues" [value]="option">
+              {{option.display}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on substance" [mdePopoverTriggerFor]="substancePopover"
+          mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+          <b>i</b>
+        </button>
+        <!-- <button mat-icon-button aria-label="click for info" [mdePopoverTriggerFor]="substancePopover"
+          mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+          <mat-icon>info</mat-icon>
+        </button> -->
+        <mde-popover #substancePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+          <mat-card style="max-width: 600px">
+            <mat-card-content>
+              The substance field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
+              <br><br>
+              Substance options are retrieved here using <b>	&lt; 105590001 |Substance| OR	&lt; 373873005 |Pharmaceutical / biologic product|</b>
+              <br><br>
+              Options are filtered based on the user input and the field is implemented with an auto-complete component
+              to limit user typing.
+              <br><br>
+              If the terminology server supports it, returned results can be limited by using <b>count=X</b>. This may prevent
+              the sever from responding with a 'too costly' error and improve performance of the lookup and rendering.
+            </mat-card-content>
+          </mat-card>
+        </mde-popover>
+  
+      </div>
+
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <div fxFlex>
+          <span matPrefix matTooltip="This field uses SNOMED CT" class="rb-circle"><b>S</b></span>
+          <label class="mat-typography">Criticality: </label>
+          <mat-radio-group formControlName="criticality">
+              <mat-radio-button *ngFor="let option of criticalityValues" [value]="option" matTooltip="SNOMED CT code: {{option.value}}">
+                  {{option.display}}
+              </mat-radio-button>
+          </mat-radio-group>
+          <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on criticality"
+            [mdePopoverTriggerFor]="criticalityPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+            <b>i</b>
+          </button>
+          <!-- <button mat-icon-button aria-label="click for info" [mdePopoverTriggerFor]="criticalityPopover"
+            mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+            <mat-icon>info</mat-icon>
+          </button> -->
+          <mde-popover #criticalityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+            <mat-card style="max-width: 600px">
+              <mat-card-content>
+                This criticality field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
+                <br><br>
+                Criticality options are retrieved here using <b>'75540009 | High | OR 62482003 |Low | OR 82334004 | Indeterminate |'</b>
+                <br><br>
+                With fields like criticality, the order of choices for the user can be important. 
+                <br><br>
+                If the order of a ValueSet matches the order you wish to present to the user, then you can query a ValueSet. 
+                <br><br>
+                Some terminology servers do not preserve the order if using the <b>$expand</b> operation on a ValueSet. A way to get around this is
+                to <b>Search</b> the ValueSet. 
+                <br><br>
+                <b>e.g. [terminologyServer]/ValueSet?url=http://hl7.org/fhir/ValueSet/additional-instructions-codes</b>
+                <br><br>
+                If there is not ValueSet with the correct order, you can hard-code the snomed codes in the correct order.
+             </mat-card-content>
+            </mat-card>
+          </mde-popover>
+        </div>
+      </div>
+   
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field appearance="outline" fxFlex>
+          <input type="text" placeholder="Manifestation" aria-label="Manifestation" matInput formControlName="manifestations" [matAutocomplete]="autoManifestation">
+          <!-- <mat-icon matPrefix>info</mat-icon> -->
+          <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+          <mat-autocomplete #autoManifestation="matAutocomplete" [displayWith]="displayFn.bind(this)">
+            <mat-option *ngFor="let option of filteredManifestationValues" [value]="option">
+              {{option.display}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on manifestation"
+          [mdePopoverTriggerFor]="manifestationPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+          <b>i</b>
+        </button>
+        <!-- <button mat-icon-button aria-label="click for info" [mdePopoverTriggerFor]="manifestationPopover"
+          mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+          <mat-icon>info</mat-icon>
+        </button> -->
+        <mde-popover #manifestationPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+          <mat-card style="max-width: 600px">
+            <mat-card-content>
+              The manifestation field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
+              <br><br>
+              Manifestation options are retrieved here using <b>&lt; 404684003 | Clinical finding | </b>
+              <br><br>
+              Options are filtered based on the user input and the field is implemented with an auto-complete component
+              to limit user typing.
+              <br><br>
+              If the terminology server supports it, returned results can be limited by using <b>count=X</b>. This may prevent
+              the sever from responding with a 'too costly' error and improve performance of the lookup and rendering.
+            </mat-card-content>
+          </mat-card>
+        </mde-popover>
+      </div>
+    
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field appearance="outline"  fxFlex>
+          <mat-label>Verification Status</mat-label>
+          <select matNativeControl formControlName="verificationStatus">
+            <option value="confirmed">confirmed</option>
+            <option value="unconfirmed">unconfirmed</option>
+            <option value="refuted">refuted</option>
+            <option value="entered in error">entered in error</option>
+          </select>
+        </mat-form-field>
+      </div>
+    
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field appearance="outline"  fxFlex>
+          <mat-label>comment</mat-label>
+          <input matInput formControlName="comment"/>
+        </mat-form-field>
+      </div>
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <button mat-raised-button (click)="onSaveReaction()">
+          <mat-icon>add</mat-icon> 
+          Add 
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar><mat-icon>warning</mat-icon></div>
+      <mat-card-title>Existing Allergies / Adverse Reactions</mat-card-title>
+    </mat-card-header>
+    <mat-card-content fxLayout="column">
+
+      <table mat-table fxFlex [dataSource]="reactionDataSource" class="mat-elevation-z8" #reactionTable>
+        <ng-container matColumnDef="substanceDisplay">
+          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Substance </th>
+          <td mat-cell *matCellDef="let reaction" matTooltip="SNOMED CT code: {{reaction.substanceCode}}"> {{reaction.substanceDisplay}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="criticalityDisplay">
+          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Criticality </th>
+          <td mat-cell *matCellDef="let reaction" matTooltip="SNOMED CT code: {{reaction.criticalityCode}}"> {{reaction.criticalityDisplay}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="manifestationDisplay">
+          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Manifestation </th>
+          <td mat-cell *matCellDef="let reaction" matTooltip="SNOMED CT code: {{reaction.manifestationCode}}"> {{reaction.manifestationDisplay}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="verificationStatus">
+          <th mat-header-cell *matHeaderCellDef> Verification Status </th>
+          <td mat-cell *matCellDef="let reaction"> {{reaction.verificationStatus}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="comment">
+          <th mat-header-cell *matHeaderCellDef> Comment </th>
+          <td mat-cell *matCellDef="let reaction"> {{reaction.comment}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedReactionColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedReactionColumns;"></tr>
+      </table>
+  
+  
+    </mat-card-content>
+  </mat-card>
+
+</div>    
