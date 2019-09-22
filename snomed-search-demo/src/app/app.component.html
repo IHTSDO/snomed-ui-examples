@@ -35,7 +35,7 @@
     <mat-grid-list cols="6" rowHeight="50px">
       <mat-grid-tile>
           <mat-list>
-              <mat-list-item> Medd, Snowy </mat-list-item>
+              <mat-list-item> MEDD, Snowy </mat-list-item>
           </mat-list>
       </mat-grid-tile>
       <mat-grid-tile>
@@ -45,12 +45,12 @@
       </mat-grid-tile>
       <mat-grid-tile>
           <mat-list>
-              <mat-list-item> Age: 18 </mat-list-item>
+              <mat-list-item> Age: {{getAge('2001-08-28')}} </mat-list-item>
           </mat-list>
       </mat-grid-tile>
       <mat-grid-tile>
           <mat-list>
-              <mat-list-item> Sex: male </mat-list-item>
+              <mat-list-item> Sex: {{getSex().display}} </mat-list-item>
           </mat-list>
       </mat-grid-tile>
       <mat-grid-tile>
@@ -110,84 +110,3 @@
   </mat-sidenav-container>
 
 </ng-container>
-<!-- 
-<mat-toolbar color="primary">
-  <div>
-    <a>
-      SNOMED CT Search Demo
-    </a>
-  </div>
-</mat-toolbar> 
-<div class="patientDetails">
-  <mat-grid-list cols="6" rowHeight="50px">
-      <mat-grid-tile>
-          <mat-list>
-              <mat-list-item> Medd, Snowy </mat-list-item>
-          </mat-list>
-      </mat-grid-tile>
-      <mat-grid-tile>
-          <mat-list>
-              <mat-list-item> DOB: 2001-08-28 </mat-list-item>
-          </mat-list>
-      </mat-grid-tile>
-      <mat-grid-tile>
-          <mat-list>
-              <mat-list-item> Age: 18 </mat-list-item>
-          </mat-list>
-      </mat-grid-tile>
-      <mat-grid-tile>
-          <mat-list>
-              <mat-list-item> Sex: male </mat-list-item>
-          </mat-list>
-      </mat-grid-tile>
-      <mat-grid-tile>
-          <mat-list>
-              <mat-list-item> MRN: 123456 </mat-list-item>
-          </mat-list>
-      </mat-grid-tile>
-  </mat-grid-list>
-</div>
-<mat-drawer-container class="example-container" fxLayout="column" fxFill>
-
-    <mat-toolbar color="primary">
-        <div>
-          <a>
-            SNOMED CT Search Demo
-          </a>
-        </div>
-      </mat-toolbar> 
-
-  <mat-drawer mode="side" opened>
-
-    <mat-button-toggle-group fxLayout="column" fxLayoutAlign="space-around stretch" value="encounter">
-      <mat-button-toggle value="patient-details" aria-label="Patient Details" (change)="sideMenuChanged($event)">
-        Patient Details    
-      </mat-button-toggle>
-      <mat-button-toggle value="encounter" aria-label="History" (change)="sideMenuChanged($event)">
-        Encounter    
-      </mat-button-toggle>
-      <mat-button-toggle value="allergies-adverse-reactions" aria-label="Physical" (change)="sideMenuChanged($event)">
-        Allergies / Adverse Reactions
-      </mat-button-toggle>
-      <mat-button-toggle value="patient-summary" aria-label="Patient Details" (change)="sideMenuChanged($event)">
-        Patient Summary    
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-  
-    <div>
-    <img class="centred-image" src="../assets/images//snomedIntl-brand-RGB-120px.jpg">
-  </div>
-  </mat-drawer>
-  <mat-drawer-content>
-    <app-patient-details-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'patient-details'"></app-patient-details-frame> 
-    <app-encounter-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'encounter'"></app-encounter-frame>
-    <app-reaction-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'allergies-adverse-reactions'"></app-reaction-frame> 
-    <app-patient-summary-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'patient-summary'"></app-patient-summary-frame> 
-
-  </mat-drawer-content>
-</mat-drawer-container>
-
-
- 
-
- -->

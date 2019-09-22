@@ -26,8 +26,7 @@ export interface Reaction {
   substanceDisplay: string;
   criticalityCode: string;
   criticalityDisplay: string;
-  manifestationCode: string;
-  manifestationDisplay: string; 
+  manifestations;
   verificationStatus: string; 
   comment: string;
 }
@@ -63,7 +62,7 @@ export interface Procedure {
 export class DemoModelService {
 
   reactions: Reaction[] = [
-    {substanceCode: '764146007', substanceDisplay: 'Penicillin', criticalityCode: '75540009', criticalityDisplay: 'High', manifestationCode: '271807003', manifestationDisplay: 'Rash', verificationStatus: 'confirmed', comment: 'childhood'},
+    {substanceCode: '764146007', substanceDisplay: 'Penicillin', criticalityCode: '75540009', criticalityDisplay: 'High', manifestations : [{value: '271807003', display: 'Rash'}], verificationStatus: 'confirmed', comment: 'childhood'},
   ];
 
   procedures: Procedure[] = [
@@ -77,7 +76,17 @@ export class DemoModelService {
   encounters: Encounter[] = [
   ];
 
+  sex: SnomedConcept = {display:'Male',value: '248153007'};
+
   constructor() { }
+
+  getSex() : SnomedConcept {
+    return this.sex;
+  }
+
+  setSex(sex : SnomedConcept) {
+    this.sex = sex;
+  }
 
   getEncounters() : Encounter[] {
 
@@ -88,9 +97,9 @@ export class DemoModelService {
   addEncounter(rfeCode: string, rfeDisplay: string, procCode: string, procDisplay: string, 
     diagCode: string, diagDisplay: string, diagNote: string, latCode: string, latDisplay: string, enctrNote: string) {
 
-    this.encounters.push(
+    this.encounters.unshift(
       {
-        reasonForEncounterCode: rfeCode, reasonForEncounterDisplay: rfeDisplay, 
+        reasonForEncounterCode: rfeCode, reasonForEncounterDisplay: rfeDisplay,
         procedureCode: procCode, procedureDisplay: procDisplay,
         diagnosisCode: diagCode, diagnosisDisplay: diagDisplay,
         diagnosisNote: diagNote,
@@ -116,17 +125,23 @@ export class DemoModelService {
     return filteredReactions;
   }
 
-  addReaction(subCode : string, subDisplay: string, critCode: string, critDisplay: string, manifestCode: string, manifestDisplay, verStatus: string, cmt: string) {
+  addReaction(
+    subCode : string, 
+    subDisplay: string, 
+    critCode: string, 
+    critDisplay: string, 
+    manifestationsList,
+    verStatus: string, 
+    cmt: string) {
     
-    console.log("addReaction called");
     this.reactions.push(
       {substanceCode: subCode, substanceDisplay: subDisplay, 
       criticalityCode: critCode, criticalityDisplay: critDisplay, 
-      manifestationCode: manifestCode, manifestationDisplay: manifestDisplay, 
+      manifestations: manifestationsList,
       verificationStatus: verStatus, 
       comment: cmt}
     )
-    console.log("reactions now", this.reactions);
+
   }
 
   getProcedures() : Procedure[] {

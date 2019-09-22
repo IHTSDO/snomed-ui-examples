@@ -3,10 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, tap, switchMap, finalize } from 'rxjs/operators';
 import { ValueSet } from 'fhir-stu3';
-import { DemoModelService } from 'src/app/demo-model.service';
-import { Subscription } from 'rxjs';
-import { MatTableDataSource } from '@angular/material';
-import { query } from '@angular/animations';
+import { DemoModelService} from 'src/app/demo-model.service';
+import { Subscription} from 'rxjs';
+import { MatTableDataSource} from '@angular/material';
 
 @Component({
   selector: 'app-encounter-frame',
@@ -21,7 +20,6 @@ export class EncounterFrameComponent implements OnInit {
   encounterDataSource = new MatTableDataSource(this.demoModelService.getEncounters());
 
   timestamp : Date;
-  //boosted = false;
   
   filteredEncounterReasonValues = [];
   filteredProcedureValues = [];
@@ -38,7 +36,7 @@ export class EncounterFrameComponent implements OnInit {
     boosted: new FormControl(false),
   });
 
-  preferredProcedureValues = [
+  preferredDiagnosisValues = [
     {value: '38341003', display:	'Hypertension'},
     {value: '195967001', display:	'Asthma'},
     {value: '35489007', display:	'Depression'},
@@ -103,16 +101,16 @@ export class EncounterFrameComponent implements OnInit {
     const LATERALITY_URL = 	this.snomedServer + '/ValueSet/$expand?_format=json&url=' + encodeURIComponent('http://snomed.info/sct') 
     + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 182353008') 
     + '&includeDesignations=true';
-    
-    //const LATERALITY_URL = this.snomedServer + '/ValueSet/bodysite-laterality/$expand';
-   
+
+    var encounterReasonFilter;
     this.encounterReasonChangeSubscription = this.encounterForm.get('reasonForEncounter').valueChanges
     .pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      tap(() => {
+      tap((value) => {
+        encounterReasonFilter = (value instanceof Object) ? value.display : value;
       }),
-      switchMap(value => this.httpClient.get<ValueSet>(ENCOUNTER_REASON_URL + '&filter=' + ((typeof value === 'string') ? value : value.display))
+      switchMap(value => this.httpClient.get<ValueSet>(ENCOUNTER_REASON_URL + '&filter=' + encounterReasonFilter)
         .pipe(
           finalize(() => {
           }),
@@ -120,34 +118,36 @@ export class EncounterFrameComponent implements OnInit {
       )
     )
     .subscribe(data => {
+      this.filteredEncounterReasonValues = [];
       if (data.expansion.contains) {
-        this.filteredEncounterReasonValues = [];
         data.expansion.contains.forEach(val => {
           this.filteredEncounterReasonValues.push({value: val.code, display: val.display});
         });
       }
+      else {
+        this.filteredEncounterReasonValues.push({display: encounterReasonFilter, value: null});
+      }       
     });
 
-    var filterTerm;
+    var diagnosisFilter;
 
     this.diagnosisChangeSubscription = this.encounterForm.get('diagnosis').valueChanges
     .pipe(
       debounceTime(500),
       distinctUntilChanged(),
       tap((value) => {
+        diagnosisFilter = (value instanceof Object) ? value.display : value;
+
         // boost search
         if (this.encounterForm.get('boosted').value) {
-          filterTerm = value;
-          console.log("looking for ", this.encounterForm.get('procedure').value.value);
-          this.preferredProcedureValues.filter(function(preferredVal) {
-            console.log("preferredVal", preferredVal);
+          this.preferredDiagnosisValues.filter(function(preferredVal) {
             return (preferredVal['display']).indexOf(value) > -1;
           }).forEach(val => {
             this.filteredDiagnosisValues.push(val);
           })
         }
       }),
-      switchMap(value => this.httpClient.get<ValueSet>(DIAGNOSIS_URL + '&filter=' + ((typeof value === 'string') ? value : value.display))
+      switchMap(value => this.httpClient.get<ValueSet>(DIAGNOSIS_URL + '&filter=' + diagnosisFilter)
         .pipe(
           finalize(() => {
           }),
@@ -155,31 +155,37 @@ export class EncounterFrameComponent implements OnInit {
       )
     )
     .subscribe(data => {
+      this.filteredDiagnosisValues = [];
+
+      // boost search
+      if (this.encounterForm.get('boosted').value) {
+        this.preferredDiagnosisValues.filter(function(preferredVal) {
+          return (preferredVal['display']).toLowerCase().indexOf(diagnosisFilter.toLowerCase()) > -1;
+        }).forEach(val => {
+          this.filteredDiagnosisValues.push(val);
+        })
+      }
+
       if (data.expansion.contains) {
-        this.filteredDiagnosisValues = [];
-        // boost search
-        if (this.encounterForm.get('boosted').value) {
-          console.log("looking for ", this.encounterForm.get('procedure').value.value);
-          this.preferredProcedureValues.filter(function(preferredVal) {
-            console.log("preferredVal", preferredVal);
-            return (preferredVal['display']).indexOf(filterTerm) > -1;
-          }).forEach(val => {
-            this.filteredDiagnosisValues.push(val);
-          })
-        }
+
         data.expansion.contains.forEach(val => {
           this.filteredDiagnosisValues.push({value: val.code, display: val.display});
         });
       }
+      else {
+        this.filteredDiagnosisValues.push({display: diagnosisFilter, value: null});
+      }
     });
 
+    var procedureFilter;
     this.procedureChangeSubscription = this.encounterForm.get('procedure').valueChanges
     .pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      tap(() => {
+      tap((value) => {
+        procedureFilter = (value instanceof Object) ? value.display : value;
       }),
-      switchMap(value => this.httpClient.get<ValueSet>(PROCEDURE_URL + '&filter=' + ((typeof value === 'string') ? value : value.display))
+      switchMap(value => this.httpClient.get<ValueSet>(PROCEDURE_URL + '&filter=' + procedureFilter)
         .pipe(
           finalize(() => {
           }),
@@ -187,38 +193,16 @@ export class EncounterFrameComponent implements OnInit {
       )
     )
     .subscribe(data => {
+      this.filteredProcedureValues = [];
       if (data.expansion.contains) {
-        this.filteredProcedureValues = [];
         data.expansion.contains.forEach(val => {
           this.filteredProcedureValues.push({value: val.code, display: val.display});
         });
       }
+      else {
+        this.filteredProcedureValues.push({display: procedureFilter, value: null});
+      }
     });
-
-    // initialize the drop-downs with some data so it appears like the search is working
-    // var encounterReasonSubscription = this.httpClient.get<ValueSet>(ENCOUNTER_REASON_URL)
-    //   .subscribe(result => {
-    //     result.expansion.contains.forEach(val => {
-    //       this.filteredEncounterReasonValues.push({value: val.code, display: val.display});
-    //     })
-    //     encounterReasonSubscription.unsubscribe();
-    //   });
-
-    // var diagnosisSubscription = this.httpClient.get<ValueSet>(DIAGNOSIS_URL)
-    //   .subscribe(result => {
-    //     result.expansion.contains.forEach(val => {
-    //       this.filteredDiagnosisValues.push({value: val.code, display: val.display});
-    //     })
-    //     diagnosisSubscription.unsubscribe();
-    //   });
-
-    // var procedureSubscription = this.httpClient.get<ValueSet>(PROCEDURE_URL)
-    //   .subscribe(result => {
-    //     result.expansion.contains.forEach(val => {
-    //       this.filteredProcedureValues.push({value: val.code, display: val.display});
-    //     })
-    //     procedureSubscription.unsubscribe();
-    //   });
 
     var lateralitySubscription = this.httpClient.get<ValueSet>(LATERALITY_URL)
       .subscribe(result => {
@@ -230,15 +214,6 @@ export class EncounterFrameComponent implements OnInit {
       }
     );
 
-    var preferredDiagnosisSubscription = this.httpClient.get<ValueSet>(LATERALITY_URL)
-      .subscribe(result => {
-        result.expansion.contains.forEach(val => {
-          this.lateralityValues.push({value: val.code, display: val.display});
-        })
-        this.lateralityValues.push({value: '', display: ''});
-        lateralitySubscription.unsubscribe();
-      }
-    );
   }
 
   onNgDestroy() {
@@ -253,15 +228,16 @@ export class EncounterFrameComponent implements OnInit {
   }
 
   procedureSelected(procedure) {
-    console.log("procedure selected is", procedure);
     
     // extract procedure site from the selected procedure
 
-    var querySubscription = this.httpClient.get<ValueSet>(this.snomedServer + '/ValueSet/$expand?_format=json&url=' + encodeURIComponent('http://snomed.info/sct') 
+    var bodySiteSubscription = this.httpClient.get<ValueSet>(this.snomedServer + '/ValueSet/$expand?_format=json&url=' + encodeURIComponent('http://snomed.info/sct') 
     + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent(procedure.value + '.<< 363704007'))
      .subscribe(data => {
-       console.log("data", data);
+
         if (data.expansion.contains) {
+
+          var bodySiteCode = data.expansion.contains[0].code;
 
           // extract the laterality if it exists and populate laterality field
           var queryLatSubscription = this.httpClient.get<ValueSet>(this.snomedServer + '/ValueSet/$expand?_format=json&url=' + encodeURIComponent('http://snomed.info/sct') 
@@ -269,31 +245,37 @@ export class EncounterFrameComponent implements OnInit {
            .subscribe(data => {
             if (data.expansion.contains) {
               var latDetails = data.expansion.contains[0];
-
+              this.encounterForm.get('laterality').disable();
               this.encounterForm.get('laterality').setValue({value: latDetails['code'], display: latDetails['display']});
             }
             else {
+              // now check the lateralizable reference set to see if it is permissable to set the laterality of this concept
+              var lateralizableSubscription = this.httpClient.get(this.snomedServer + '/ValueSet/$validate-code?system=http://snomed.info/sct'
+              + '&code=' + bodySiteCode + '&url=http://snomed.info/sct?fhir_vs=refset/723264001')
+              .subscribe(data => {
+                if (data['parameter'][0].valueBoolean) {
+                  this.encounterForm.get('laterality').enable();
+                }
+                else {
+                  this.encounterForm.get('laterality').disable();
+                }
+              });
               // reset to laterality to blank in case a procedure was previously selected
-              this.encounterForm.get('laterality').setValue({value: '', display: ''});
+              this.encounterForm.get('laterality').setValue(null);
             }
-            console.log("data2", data);
             queryLatSubscription.unsubscribe();
            });
 
-          // value returned for procedure site
-          // see if the procedure site permits laterality
-          // var latQuerySubscription = this.httpClient.get<ValueSet>(this.snomedServer + '/ValueSet/$expand?_format=json&url=' + encodeURIComponent('http://snomed.info/sct') 
-          // + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent(procedure.value + '.<< 363704007'))
           this.encounterForm.get('laterality').enable();
         }
         else {
           // no procedure site, don't allow laterality to be specified
           // reset to laterality to blank in case a procedure was previously selected
-          this.encounterForm.get('laterality').setValue({value: '', display: ''});
+          this.encounterForm.get('laterality').setValue(null);
           this.encounterForm.get('laterality').disable();
         }
       
-      querySubscription.unsubscribe();
+      bodySiteSubscription.unsubscribe();
 
     });
   }
@@ -306,6 +288,11 @@ export class EncounterFrameComponent implements OnInit {
       }
     }
     return equal;
+  }
+
+  boostChecked() {
+    // reset so old values don't show up
+    this.filteredDiagnosisValues = [];
   }
 
   onSaveEncounter() {
@@ -322,19 +309,17 @@ export class EncounterFrameComponent implements OnInit {
         this.encounterForm.get('diagnosis').value.display,
         this.timestamp.toString());
     }
-    console.log("this.encounterForm.get('laterality').value", this.encounterForm.get('laterality').value.value);
-    console.log("this.encounterForm.get('laterality').value", this.encounterForm.get('laterality').value.display);
 
     this.demoModelService.addEncounter(
-      this.encounterForm.get('reasonForEncounter').value.value,
-      this.encounterForm.get('reasonForEncounter').value.display,
-      this.encounterForm.get('procedure').value.value,
-      this.encounterForm.get('procedure').value.display,
-      this.encounterForm.get('diagnosis').value.value,
-      this.encounterForm.get('diagnosis').value.display,
+      this.encounterForm.get('reasonForEncounter').value ? this.encounterForm.get('reasonForEncounter').value.value : null,
+      this.encounterForm.get('reasonForEncounter').value ? this.encounterForm.get('reasonForEncounter').value.display : null,
+      this.encounterForm.get('procedure').value ? this.encounterForm.get('procedure').value.value : null,
+      this.encounterForm.get('procedure').value ? this.encounterForm.get('procedure').value.display : null,
+      this.encounterForm.get('diagnosis').value ? this.encounterForm.get('diagnosis').value.value : null,
+      this.encounterForm.get('diagnosis').value ? this.encounterForm.get('diagnosis').value.display : null,
       this.encounterForm.get('diagnosisNote').value,
-      this.encounterForm.get('laterality').value.value,
-      this.encounterForm.get('laterality').value.display, 
+      this.encounterForm.get('laterality').value ? this.encounterForm.get('laterality').value.value : null,
+      this.encounterForm.get('laterality').value ? this.encounterForm.get('laterality').value.display : null, 
       this.encounterForm.get('encounterNote').value,
     );
 
@@ -344,7 +329,17 @@ export class EncounterFrameComponent implements OnInit {
     // empty fields for another encounter to be added
     this.encounterForm.reset({ emitEvent: false });
 
-    console.log("this.demoModelService.getEncounters()", this.demoModelService.getEncounters());
+    this.filteredDiagnosisValues = [];
+    this.filteredEncounterReasonValues = [];
+    this.filteredProcedureValues = [];
+
+  }
+
+  isMatBadgeHidden(conceptID) {
+    if (conceptID) {
+      return false;
+    }
+    return true;
   }
 
 }

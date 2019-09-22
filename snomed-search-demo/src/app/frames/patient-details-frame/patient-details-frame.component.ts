@@ -2,6 +2,8 @@ import { Component, OnInit, Input} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ValueSet } from 'fhir-stu3';
+import { DemoModelService, SnomedConcept } from 'src/app/demo-model.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-patient-details-frame',
@@ -18,43 +20,20 @@ export class PatientDetailsFrameComponent implements OnInit {
 
   smokingStatus = false;
 
-  //status = {display:'Male',value:'248153007'};
+  sexChangeSubscription : Subscription;
+  smokingStatusChangeSubsciption: Subscription;
 
   patientDetailsForm = new FormGroup({
-    sex: new FormControl({display:'Male',value:'248153007'}),
+    sex: new FormControl(this.demoModelService.getSex()),
     smokingStatus: new FormControl(''),
     smokerType: new FormControl(''),
   });
 
-  compareSex(sex1: any, sex2: any): boolean {
-    console.log("comparing sex1", sex1);
-    console.log("comparing sex2", sex2);
-    var equal = false;
-    if (sex1 && sex2) {
-      if (sex1.value === sex2.value) {
-        equal = true;
-      }
-    }
-    return equal;
-  }
-
-  constructor(private httpClient: HttpClient) { 
+  constructor(private httpClient: HttpClient, private demoModelService : DemoModelService) { 
   }
 
   ngOnInit() {
 
-  //   this.patientDetailsForm.controls.sex.setValue(
-  //     {sex:'Male'}
-  //  );
-
-    // this.patientDetailsForm.get('sex').valueChanges.subscribe(val => {
-    //   console.log('My sex is ', val);
-    // });
-
-    //<!--[selected]="sex.code === '248153007'"-->
-    //this.patientDetailsForm.get('sex').setValue('Male');
-
-    //const SEX_URL = this.snomedServer + '/ValueSet/$expand?_format=json&url=http:%2F%2Fsnomed.info%2Fsct?fhir_vs=isa%2F429019009';
     const SEX_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
     + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('248153007 OR 248152002 OR 32570691000036108 OR 32570681000036106 OR 407377005 OR 407376001')
     + '&count=20&includeDesignations=true';
@@ -64,7 +43,6 @@ export class PatientDetailsFrameComponent implements OnInit {
 
     const SMOKER_TYPE_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
     + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('59978006 OR 65568007 OR 82302008');
-    console.log("smoker type url =", SMOKER_TYPE_URL);
    
     // initialize the drop-downs with some data
     var sexSubscription = this.httpClient.get<ValueSet>(SEX_URL)
@@ -91,30 +69,37 @@ export class PatientDetailsFrameComponent implements OnInit {
         smokerTypeSubscription.unsubscribe();
       });
 
-      var smokingStatusSubsciption = this.patientDetailsForm.get('smokingStatus').valueChanges
-      .subscribe(data => {
-        console.log('smoking staus=', this.patientDetailsForm.get('smokingStatus').value);
-        if (this.patientDetailsForm.get('smokingStatus').value.code === '77176002' ||
-         this.patientDetailsForm.get('smokingStatus').value.code === '8517006') {
+      this.smokingStatusChangeSubsciption = this.patientDetailsForm.get('smokingStatus').valueChanges
+      .subscribe(data => {                  
+        if (data.value === '77176002' ||
+         data.value === '8517006') {
            this.smokingStatus = true;
         }
         else {
           this.smokingStatus = false;
         }
-        console.log("smokingStatus is now ", this.smokingStatus);
+      });
+
+      this.sexChangeSubscription = this.patientDetailsForm.get('sex').valueChanges
+      .subscribe(sex => {
+        this.demoModelService.setSex(sex)
       });
   }
 
-  // isSmoker() {
-  //   //77176002|Smoker| OR 8517006|Ex-smoker|)
-  //   var isSmoker = false;
-    
-  //   if (this.patientDetailsForm.get('smokingStatus').value.code === '77176002' ||
-  //   this.patientDetailsForm.get('smokingStatus').value.code === '8517006') {
-  //     isSmoker = true;
-  //   }
-  //   console.log("isSmoker=", isSmoker);
-  //   return isSmoker;
-  // }
+  onNgDestroy() {
+    this.sexChangeSubscription.unsubscribe();
+    this.smokingStatusChangeSubsciption.unsubscribe();
+  }
+
+  compare(value1: any, value2: any): boolean {
+
+    var equal = false;
+    if (value1 && value2) {
+      if (value1.value === value2.value) {
+        equal = true;
+      }
+    }
+    return equal;
+  }
 
 }

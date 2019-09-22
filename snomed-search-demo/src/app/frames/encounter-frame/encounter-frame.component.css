@@ -12,9 +12,6 @@ table {
     width: 12px;
     height: 12px;
     padding: 12px;
-    /* width: 16px;
-    height: 16px;
-    padding: 4px; */
     background: #00A9E0;
     color: white;
     text-align: center;
@@ -32,10 +29,46 @@ table {
     color: white;
 }
 
+.boost-toggle {
+    margin-top: 10px;
+}
+
+button.dont-stretch {
+    align-self: flex-start;
+    margin-top: 10px;
+}
+
+.mat-chip {
+     overflow: visible;
+}
+
+td.mat-badge.mat-badge-above:not(.mat-chip) .mat-badge-content:not(.mat-chip) {
+    top: 12px;
+}
+
+td.mat-badge.mat-badge-above:first-of-type .mat-badge-content:first-of-type {
+    left: 2px;
+}
+td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type {
+    padding-left: 28px;
+}
+
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: #00A9E0; 
+}
+
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: grey; 
+}
+
+::ng-deep .mat-slide-toggle:not(.mat-slide-toggle-disabled) .mat-slide-toggle-ripple .mat-ripple-element {
+    background-color: #00A9E0 !important;
+}
+
 ::ng-deep .mat-checkbox-checked .mat-checkbox-background, .mat-checkbox-indeterminate .mat-checkbox-background {
     background-color: #00A9E0 !important;
-  }
-  
-  ::ng-deep .mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+}
+
+::ng-deep .mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
     background-color: #00A9E0 !important;
-  }
+}

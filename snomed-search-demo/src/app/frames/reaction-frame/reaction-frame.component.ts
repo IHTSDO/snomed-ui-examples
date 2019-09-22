@@ -1,11 +1,12 @@
-import { Component, OnInit, Input} from '@angular/core';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { Component, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, tap, switchMap, finalize } from 'rxjs/operators';
 import { ValueSet } from 'fhir-stu3';
 import { DemoModelService, SnomedConcept } from 'src/app/demo-model.service';
-import { Observable, Subscription } from 'rxjs';
-import { MatTableDataSource } from '@angular/material';
+import { Subscription } from 'rxjs';
+import { MatTableDataSource, MatAutocomplete, MatChipInputEvent, MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
   selector: 'app-reaction-frame',
@@ -21,12 +22,12 @@ export class ReactionFrameComponent implements OnInit {
   
   filteredSubstanceValues : SnomedConcept[] = [];
   filteredManifestationValues : SnomedConcept[] = [];
-  //criticalityValues : SnomedConcept[] = [];
   criticalityValues: SnomedConcept[] = [
     {display: 'Low', value: '62482003'}, 
     {display: 'High', value: '75540009'},  
     {display: 'Indeterminate', value: '82334004'}
   ];
+  manifestations: string[] = [];
 
   reactionForm = new FormGroup({
     substance: new FormControl(''),
@@ -52,44 +53,43 @@ export class ReactionFrameComponent implements OnInit {
     + encodeURIComponent('?fhir_vs=isa/404684003')
     + '&count=20&includeDesignations=true';
 
-    // const CRITICALITY_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
-    // + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('75540009 OR 62482003 OR 82334004');
-    // // this.substanceURL = this.snomedServer + '/ValueSet/$expand?url=http%3A%2F%2Fsnomed.info%2Fsct%3Ffhir_vs%3Decl%2F%3C%20105590001%20OR%20%3C%20373873005&count=20&includeDesignations=true';
-    // this.manifestationURL = this.snomedServer + '/ValueSet/$expand?_format=json&url=http:%2F%2Fsnomed.info%2Fsct?fhir_vs=isa%2F404684003&count=20&includeDesignations=true';
-
+    var substanceFilter;
     this.substanceChangeSubsciption = this.reactionForm.get('substance').valueChanges
     .pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      tap(() => {
+      tap((value) => {
+        substanceFilter = (value instanceof Object) ? value.display : value;
       }),
-      switchMap(value => this.httpClient.get<ValueSet>(SUBSTANCE_URL + '&filter=' + ((typeof value === 'string') ? value : value.display))
+      switchMap(value => this.httpClient.get<ValueSet>(SUBSTANCE_URL + '&filter=' + substanceFilter)
         .pipe(
           finalize(() => {
-            console.log("value", value);
-            console.log("value.display", value.display);
-            console.log("value.value", value.value);
-            console.log("value instanceof Object", value instanceof Object)
           }),
         )
       )
     )
     .subscribe(data => {
+      this.filteredSubstanceValues = [];
       if (data.expansion.contains) {
-        this.filteredSubstanceValues = [];
         data.expansion.contains.forEach(val => {
           this.filteredSubstanceValues.push({value: val.code, display: val.display});
         });
       }
+      else {
+        this.filteredSubstanceValues.push({display: substanceFilter, value: null});        
+      }
+
     });
 
+    var manifestationFilter;
     this.manifestationChangeSubscription = this.reactionForm.get('manifestations').valueChanges
     .pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      tap(() => {
+      tap((value) => {
+        manifestationFilter = (value instanceof Object) ? value.display : value;
       }),
-      switchMap(value => this.httpClient.get<ValueSet>(MANIFESTATION_URL + '&filter=' + ((typeof value === 'string') ? value : value.display))
+      switchMap(value => this.httpClient.get<ValueSet>(MANIFESTATION_URL + '&filter=' + manifestationFilter)
         .pipe(
           finalize(() => {
           }),
@@ -97,39 +97,16 @@ export class ReactionFrameComponent implements OnInit {
       )
     )
     .subscribe(data => {
+      this.filteredManifestationValues = [];
       if (data.expansion.contains) {
-        this.filteredManifestationValues = [];
         data.expansion.contains.forEach(val => {
           this.filteredManifestationValues.push({value: val.code, display: val.display});
         });
       }
+      else {
+        this.filteredManifestationValues.push({display: manifestationFilter, value: null});
+      }
     });
-
-
-    // initialize the drop-downs with some data so it appears like the search is working
-    // var substanceSubscription = this.httpClient.get<ValueSet>(SUBSTANCE_URL)
-    //   .subscribe(result => {
-    //     result.expansion.contains.forEach(val => {
-    //       this.filteredSubstanceValues.push({value: val.code, display: val.display});
-    //     })
-    //     substanceSubscription.unsubscribe();
-    //   });
-
-    // var manifestationSubscription = this.httpClient.get<ValueSet>(MANIFESTATION_URL)
-    //   .subscribe(result => {
-    //     result.expansion.contains.forEach(val => {
-    //       this.filteredManifestationValues.push({value: val.code, display: val.display});
-    //     })
-    //     manifestationSubscription.unsubscribe();
-    //   });
-
-    // var criticalitySubscription = this.httpClient.get<ValueSet>(CRITICALITY_URL)
-    // .subscribe(result => {
-    //   result.expansion.contains.forEach(val => {
-    //     this.criticalityValues.push({value: val.code, display: val.display});
-    //   })
-    //   criticalitySubscription.unsubscribe();
-    // });
 
   }
 
@@ -141,11 +118,6 @@ export class ReactionFrameComponent implements OnInit {
   displayFn(code) {
     if (!code) return '';
     return code.display;
-    // for (var entry in this.filteredSubstanceValues) {
-    //   if (this.filteredSubstanceValues[entry]['value'] === code) {
-    //     return this.filteredSubstanceValues[entry]['display'];
-    //   }
-    // }
   }
 
   compareValues(value1: any, value2: any): boolean {
@@ -158,23 +130,14 @@ export class ReactionFrameComponent implements OnInit {
     return equal;
   }
 
-  // getCriticalityKeys() : Array<string> {
-  //   return Object.keys(this.criticalityOptions);
-  // }
-
-  // getCriticalityCode(key) {
-  //   return this.criticalityOptions[key];
-  // }
-
   onSaveReaction() {
 
     this.demoModelService.addReaction(
-      this.reactionForm.get('substance').value.value,
-      this.reactionForm.get('substance').value.display,
-      this.reactionForm.get('criticality').value.value,
-      this.reactionForm.get('criticality').value.display,
-      this.reactionForm.get('manifestations').value.value,
-      this.reactionForm.get('manifestations').value.display,  
+      this.reactionForm.get('substance').value ? this.reactionForm.get('substance').value.value : null,
+      this.reactionForm.get('substance').value ? this.reactionForm.get('substance').value.display : null,
+      this.reactionForm.get('criticality').value ? this.reactionForm.get('criticality').value.value : null,
+      this.reactionForm.get('criticality').value ? this.reactionForm.get('criticality').value.display : null,
+      this.manifestations,
       this.reactionForm.get('verificationStatus').value,   
       this.reactionForm.get('comment').value,
     );
@@ -183,11 +146,61 @@ export class ReactionFrameComponent implements OnInit {
     this.reactionDataSource = new MatTableDataSource(this.demoModelService.getReactions(undefined));
     
     // empty fields for another reaction to be added
-    this.reactionForm.get('substance').reset();
-    this.reactionForm.get('criticality').reset();
-    this.reactionForm.get('manifestations').reset(); 
-    this.reactionForm.get('verificationStatus').reset();
-    this.reactionForm.get('comment').reset();
+    this.reactionForm.reset({ criticality: this.criticalityValues[0] });
+
+    this.filteredSubstanceValues = [];
+    this.filteredSubstanceValues = [];
+    this.manifestations = [];
+  }
+
+  // multi manifestation functionality below
+
+  selectable = false;
+  addOnBlur = false;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+
+  @ViewChild('manifestationsInput', {static: false}) manifestationsInput: ElementRef<HTMLInputElement>;
+  @ViewChild('autoManifestation', {static: false}) matAutocomplete: MatAutocomplete;
+
+  add(event: MatChipInputEvent): void {
+    // Add  only when MatAutocomplete is not open
+    // To make sure this does not conflict with OptionSelected Event
+    if (!this.matAutocomplete.isOpen) {
+      const input = event.input;
+      const value = event.value;
+
+      // Add manifestation
+      if ((value || '').trim()) {
+        this.manifestations.push(value.trim());
+      }
+
+      // Reset the input value
+      if (input) {
+        input.value = '';
+      }
+
+      this.reactionForm.get('manifestations').setValue(null);
+    }
+  }
+
+  remove(manifestation: string): void {
+    const index = this.manifestations.indexOf(manifestation);
+
+    if (index >= 0) {
+      this.manifestations.splice(index, 1);
+    }
+  }
+
+  manifestationsSelected(manifestation): void {
+    this.manifestations.push(manifestation);
+    this.manifestationsInput.nativeElement.value = '';
+  }  
+
+  isMatBadgeHidden(conceptID) {
+    if (conceptID) {
+      return false;
+    }
+    return true;
   }
 
 }

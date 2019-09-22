@@ -4,7 +4,6 @@
     <mat-card-header>
       <div mat-card-avatar><mat-icon>add</mat-icon></div>
       <mat-card-title>Add New Allergy / Adverse Reaction</mat-card-title>
-      <!-- <mat-card-subtitle>Personal details of the Patient</mat-card-subtitle> -->
     </mat-card-header>
     <mat-card-content>
 
@@ -22,10 +21,6 @@
           mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
           <b>i</b>
         </button>
-        <!-- <button mat-icon-button aria-label="click for info" [mdePopoverTriggerFor]="substancePopover"
-          mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
-          <mat-icon>info</mat-icon>
-        </button> -->
         <mde-popover #substancePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
           <mat-card style="max-width: 600px">
             <mat-card-content>
@@ -38,6 +33,8 @@
               <br><br>
               If the terminology server supports it, returned results can be limited by using <b>count=X</b>. This may prevent
               the sever from responding with a 'too costly' error and improve performance of the lookup and rendering.
+              <br><br>
+              If no options are retrieved, the field allows the user to enter their own value.
             </mat-card-content>
           </mat-card>
         </mde-popover>
@@ -57,13 +54,12 @@
             [mdePopoverTriggerFor]="criticalityPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
             <b>i</b>
           </button>
-          <!-- <button mat-icon-button aria-label="click for info" [mdePopoverTriggerFor]="criticalityPopover"
-            mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
-            <mat-icon>info</mat-icon>
-          </button> -->
           <mde-popover #criticalityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
             <mat-card style="max-width: 600px">
               <mat-card-content>
+                This field is an example of using SNOMED CT radiobuttons. Radiobuttons are appropriate to use 
+                when <b>only one option</b> can be selected, and there are only a couple of options.
+                <br><br>
                 This criticality field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
                 <br><br>
                 Criticality options are retrieved here using <b>'75540009 | High | OR 62482003 |Low | OR 82334004 | Indeterminate |'</b>
@@ -86,10 +82,25 @@
    
       <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
         <mat-form-field appearance="outline" fxFlex>
-          <input type="text" placeholder="Manifestation" aria-label="Manifestation" matInput formControlName="manifestations" [matAutocomplete]="autoManifestation">
-          <!-- <mat-icon matPrefix>info</mat-icon> -->
-          <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
-          <mat-autocomplete #autoManifestation="matAutocomplete" [displayWith]="displayFn.bind(this)">
+          <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>          
+          <mat-chip-list #chipList aria-label="Manifestations">
+            <mat-chip
+              *ngFor="let manifestation of manifestations"
+              [selectable]="selectable"
+              (removed)="remove(manifestation)">
+              <span *ngIf="!isMatBadgeHidden(manifestation.value)" mat-icon class="badge"><b>S</b></span>
+              {{manifestation.display}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input type="text" placeholder="Manifestations" aria-label="Manifestations" matInput formControlName="manifestations" 
+              #manifestationsInput
+              [matAutocomplete]="autoManifestation"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="add($event)">
+          </mat-chip-list>
+          <mat-autocomplete #autoManifestation="matAutocomplete" [displayWith]="displayFn.bind(this)" (optionSelected)='manifestationsSelected($event.option.value)'>
             <mat-option *ngFor="let option of filteredManifestationValues" [value]="option">
               {{option.display}}
             </mat-option>
@@ -99,10 +110,6 @@
           [mdePopoverTriggerFor]="manifestationPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
           <b>i</b>
         </button>
-        <!-- <button mat-icon-button aria-label="click for info" [mdePopoverTriggerFor]="manifestationPopover"
-          mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
-          <mat-icon>info</mat-icon>
-        </button> -->
         <mde-popover #manifestationPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
           <mat-card style="max-width: 600px">
             <mat-card-content>
@@ -115,6 +122,10 @@
               <br><br>
               If the terminology server supports it, returned results can be limited by using <b>count=X</b>. This may prevent
               the sever from responding with a 'too costly' error and improve performance of the lookup and rendering.
+              <br><br>
+              If no options are retrieved, the field allows the user to enter their own value.
+              <br><br>
+              This field allows the entry of <b>multiple SNOMED CT concepts</b>             
             </mat-card-content>
           </mat-card>
         </mde-popover>
@@ -156,18 +167,39 @@
 
       <table mat-table fxFlex [dataSource]="reactionDataSource" class="mat-elevation-z8" #reactionTable>
         <ng-container matColumnDef="substanceDisplay">
-          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Substance </th>
-          <td mat-cell *matCellDef="let reaction" matTooltip="SNOMED CT code: {{reaction.substanceCode}}"> {{reaction.substanceDisplay}} </td>
+          <th mat-header-cell *matHeaderCellDef> Substance </th>
+          <td mat-cell *matCellDef="let reaction" 
+            matTooltip="SNOMED CT code: {{reaction.substanceCode}}"
+            matBadge="S" 
+            matBadgePosition="above before" 
+            matBadgeColor="warn"
+            matBadgeOverlap="false"
+            [matBadgeHidden]="isMatBadgeHidden(reaction.substanceCode)"> {{reaction.substanceDisplay}} </td>
         </ng-container>
   
         <ng-container matColumnDef="criticalityDisplay">
-          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Criticality </th>
-          <td mat-cell *matCellDef="let reaction" matTooltip="SNOMED CT code: {{reaction.criticalityCode}}"> {{reaction.criticalityDisplay}} </td>
+          <th mat-header-cell *matHeaderCellDef> Criticality </th>
+          <td mat-cell *matCellDef="let reaction" 
+            matTooltip="SNOMED CT code: {{reaction.criticalityCode}}"
+            matBadge="S" 
+            matBadgePosition="above before" 
+            matBadgeColor="warn"
+            matBadgeOverlap="false"
+            [matBadgeHidden]="isMatBadgeHidden(reaction.criticalityCode)"> {{reaction.criticalityDisplay}} </td>
         </ng-container>
   
         <ng-container matColumnDef="manifestationDisplay">
-          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Manifestation </th>
-          <td mat-cell *matCellDef="let reaction" matTooltip="SNOMED CT code: {{reaction.manifestationCode}}"> {{reaction.manifestationDisplay}} </td>
+          <th mat-header-cell *matHeaderCellDef> Manifestations </th>
+          <td mat-cell *matCellDef="let reaction" >
+            <mat-chip-list>
+              <span *ngFor="let react of reaction.manifestations">
+                <mat-chip
+                  disableRipple
+                  matTooltip="SNOMED CT code: {{react.value}}">
+                <span *ngIf="!isMatBadgeHidden(react.value)" mat-icon class="badge"><b>S</b></span> {{react.display}} </mat-chip>
+              </span>
+            </mat-chip-list>
+          </td>
         </ng-container>
   
         <ng-container matColumnDef="verificationStatus">

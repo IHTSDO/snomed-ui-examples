@@ -1,17 +1,9 @@
 <div [formGroup]="encounterForm" class="container" fxLayout="column" fxLayoutGap="20px">
-
-    <!-- Date	Date	
-    Reason For Encounter	SNOMED type search	< 404684003 OR < 71388002 OR < 243796009 OR < 272379006
-    
-    Diagnosis	SNOMED type search	< 404684003
-    Procedure	SNOMED type search	< 71388002
-    Notes	Free text	 -->
     
   <mat-card class="patient-details-card">
     <mat-card-header>
-      <div mat-card-avatar><mat-icon>add</mat-icon></div>
-      <mat-card-title>Add New Encounter</mat-card-title>
-      <!-- <mat-card-subtitle>Personal details of the Patient</mat-card-subtitle> -->
+      <div mat-card-avatar><mat-icon>supervisor_account</mat-icon></div>
+      <mat-card-title>Current Encounter</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
@@ -38,15 +30,23 @@
         <mde-popover #encounterReasonPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
           <mat-card style="max-width: 600px">
             <mat-card-content>
-              To Be Completed
+              The Reason for Encounter field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
+              <br><br>
+              Reason for Encounter options are retrieved here using <b>	&lt; 404684003 | Clinical finding | OR &lt; 71388002 | 	Procedure | OR &lt; 243796009 |	Situation with explicit context | OR &lt; 272379006 |	Event |</b>
+              <br><br>
+              Options are filtered based on the user input and the field is implemented with an auto-complete component
+              to limit user typing.
+              <br><br>
+              If the terminology server supports it, returned results can be limited by using <b>count=X</b>. This may prevent
+              the sever from responding with a 'too costly' error and improve performance of the lookup and rendering.
+              <br><br>
+              If no options are retrieved, the field allows the user to enter their own value.
           </mat-card-content>
           </mat-card>
         </mde-popover>
       </div>
    
-      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
-          <mat-checkbox formControlName="boosted">boost preferred</mat-checkbox>
-    
+      <div class="form-row" fxLayout="row"  fxLayout.xs="column" fxLayoutGap="20px">
           <mat-form-field appearance="outline" fxFlex>
             <input type="text" placeholder="Diagnosis" aria-label="Diagnosis" matInput formControlName="diagnosis" [matAutocomplete]="autoDiagnosis">
             <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
@@ -55,7 +55,13 @@
                 {{option.display}}
               </mat-option>
             </mat-autocomplete>
+
           </mat-form-field>
+          <div fxLayout="column" class="boost-toggle" matTooltip="Boost prominence of frequently used terms">
+            <mat-slide-toggle formControlName="boosted"  (change)="boostChecked()" aria-label="boosted"></mat-slide-toggle>
+            boost            
+          </div>
+
           <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on diagnosis"
             [mdePopoverTriggerFor]="diagnosisPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
             <b>i</b>
@@ -63,7 +69,28 @@
           <mde-popover #diagnosisPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
             <mat-card style="max-width: 600px">
               <mat-card-content>
-                To Be Completed
+                The Diagnosis field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
+                <br><br>
+                Diagnosis options are retrieved here using <b>	&lt; 404684003 | Clinical finding |</b>
+                <br><br>
+                By turning on the boost toggle, located next to the Diagnosis field, you can increase the prominence of
+                a set of concepts, whilst still allowing the entry of all possible clinical findings. This technique can
+                help limit the number of keystrokes the user needs to enter before their most common concepts appear.
+                <br><br>
+                The boost list in use is this example is a list of 28 commonly used concepts for diagnosis such as 
+                <b>asthma</b>, <b>anxiety</b>, and <b>diabetes</b>. This list could be tailored for various scenarios.
+                <br><br>
+                There are a number of different boosting techniques available. This is a simple non-proprietary version
+                that involves unioning the results of two queries and then presenting the results of the common concepts 
+                query first.
+                <br><br>
+                Options are filtered based on the user input and the field is implemented with an auto-complete component
+                to limit user typing.
+                <br><br>
+                If the terminology server supports it, returned results can be limited by using <b>count=X</b>. This may prevent
+                the sever from responding with a 'too costly' error and improve performance of the lookup and rendering.
+                <br><br>
+                If no options are retrieved, the field allows the user to enter their own value.
             </mat-card-content>
             </mat-card>
           </mde-popover>
@@ -72,7 +99,7 @@
           </mat-form-field>
       </div>
     
-      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">       
         <mat-form-field appearance="outline" fxFlex>
           <input type="text" placeholder="Procedure" aria-label="Procedure" matInput formControlName="procedure" [matAutocomplete]="autoProcedure">
           <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
@@ -89,7 +116,28 @@
         <mde-popover #procedurePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
           <mat-card style="max-width: 600px">
             <mat-card-content>
-              To Be Completed
+              The Procedure field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
+              <br><br>
+              Procedure options are retrieved here using <b>	&lt; 404684003 | Procedure |</b>
+              <br><br>
+              Options are filtered based on the user input and the field is implemented with an auto-complete component
+              to limit user typing.
+              <br><br>
+              If the terminology server supports it, returned results can be limited by using <b>count=X</b>. This may prevent
+              the sever from responding with a 'too costly' error and improve performance of the lookup and rendering.
+              <br><br>
+              This field is an example of where you might use the <b>modelling</b> in a SNOMED CT concept to pre-populate or enable
+              other fields. The Laterality field will pre-populate if you select a concept whose procedure site has been modelled
+              with a laterality (e.g. 735085002 | Excision of left breast lump |). 
+              <br><br>
+              The laterality will also become enabled for user input when a concept has a procedure site, but no laterality 
+              has been specified (e.g. 392021009 | Lumpectomy of breast |). This will be further refined to restrict enablement to 
+              procedure sites in the SNOMED CT lateralisable concept reference set.
+              <br><br>
+              If the terminology server supports it, returned results can be limited by using <b>count=X</b>. This may prevent
+              the sever from responding with a 'too costly' error and improve performance of the lookup and rendering.
+              <br><br>
+              If no options are retrieved, the field allows the user to enter their own value.
             </mat-card-content>
           </mat-card>
         </mde-popover>
@@ -109,10 +157,26 @@
         <mde-popover #lateralityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
           <mat-card style="max-width: 600px">
             <mat-card-content>
-              To Be Completed
+              The Laterality field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
+              <br><br>
+              Laterality options are retrieved here using <b>	&lt; 182353008 | 	Side |</b>
+              <br><br>
+              This field is an example of a field that is populated based on the <b> modelling </b> of a concept in another field. The Procedure field 
+              controls the enablement and available choices of this Laterality field. 
+              <br><br>
+              The Laterality field will pre-populate if you select a procedure concept whose procedure site has been modelled
+              with a laterality (e.g. 735085002 | Excision of left breast lump |). 
+              <br><br>
+              The laterality will also become enabled for user input when a procedure concept has a procedure site, but no laterality 
+              has been specified (e.g. 392021009 | Lumpectomy of breast |). This will be further refined to restrict enablement to 
+              procedure sites in the SNOMED CT lateralisable concept reference set.
             </mat-card-content>
           </mat-card>
         </mde-popover>
+        <button mat-raised-button matTooltip="This button would add another procedure / laterality row for multiple procedure entry" class="dont-stretch" disabled>
+          <mat-icon>build</mat-icon> 
+            Add
+        </button>         
       </div>
     
       <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
@@ -123,8 +187,8 @@
       </div>
       <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
         <button mat-raised-button (click)="onSaveEncounter()">
-          <mat-icon>add</mat-icon> 
-            Add
+          <mat-icon>save</mat-icon> 
+            Save
         </button>
       </div>
     </mat-card-content>
@@ -133,19 +197,30 @@
   <mat-card>
     <mat-card-header>
       <div mat-card-avatar><mat-icon>supervisor_account</mat-icon></div>
-      <mat-card-title>Previous Encounters</mat-card-title>
+      <mat-card-title>Encounter History</mat-card-title>
     </mat-card-header>
     <mat-card-content fxLayout="column">
 
       <table mat-table fxFlex [dataSource]="encounterDataSource" class="mat-elevation-z8" #encounterTable>
         <ng-container matColumnDef="reasonForEncounterDisplay">
-          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Reason for Encounter </th>
-          <td mat-cell *matCellDef="let encounter" matTooltip="SNOMED CT code: {{encounter.reasonForEncounterCode}}"> {{encounter.reasonForEncounterDisplay}} </td>
+          <th mat-header-cell *matHeaderCellDef> Reason for Encounter </th>
+          <td mat-cell *matCellDef="let encounter" 
+          matTooltip="SNOMED CT code: {{encounter.reasonForEncounterCode}}"
+          matBadge="S" 
+          matBadgePosition="above before" 
+          matBadgeColor="warn"
+          [matBadgeHidden]="isMatBadgeHidden(encounter.reasonForEncounterCode)"> {{encounter.reasonForEncounterDisplay}} </td>
         </ng-container>
    
         <ng-container matColumnDef="diagnosisDisplay">
-          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Diagnosis </th>
-          <td mat-cell *matCellDef="let encounter" matTooltip="SNOMED CT code: {{encounter.diagnosisCode}}"> {{encounter.diagnosisDisplay}} </td>
+          <th mat-header-cell *matHeaderCellDef> Diagnosis </th>
+          <td mat-cell *matCellDef="let encounter" 
+            matTooltip="SNOMED CT code: {{encounter.diagnosisCode}}" 
+            matBadge="S" 
+            matBadgePosition="above before" 
+            matBadgeColor="warn"
+            matBadgeOverlap="false"
+            [matBadgeHidden]="isMatBadgeHidden(encounter.diagnosisCode)"> {{encounter.diagnosisDisplay}} </td>
         </ng-container>
 
         <ng-container matColumnDef="diagnosisNote">
@@ -154,13 +229,25 @@
         </ng-container>
   
         <ng-container matColumnDef="procedureDisplay">
-          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Procedure </th>
-          <td mat-cell *matCellDef="let encounter" matTooltip="SNOMED CT code: {{encounter.procedureCode}}"> {{encounter.procedureDisplay}} </td>
+          <th mat-header-cell *matHeaderCellDef> Procedure </th>
+          <td mat-cell *matCellDef="let encounter" 
+            matTooltip="SNOMED CT code: {{encounter.procedureCode}}" 
+            matBadge="S" 
+            matBadgePosition="above before" 
+            matBadgeColor="warn"
+            matBadgeOverlap="false"
+            [matBadgeHidden]="isMatBadgeHidden(encounter.procedureCode)"> {{encounter.procedureDisplay}} </td>
         </ng-container>
 
         <ng-container matColumnDef="lateralityDisplay">
-          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Laterality </th>
-          <td mat-cell *matCellDef="let encounter" matTooltip="SNOMED CT code: {{encounter.lateralityCode}}"> {{encounter.lateralityDisplay}} </td>
+          <th mat-header-cell *matHeaderCellDef> Laterality </th>
+          <td mat-cell *matCellDef="let encounter" 
+          matTooltip="SNOMED CT code: {{encounter.lateralityCode}}"
+          matBadge="S" 
+          matBadgePosition="above before" 
+          matBadgeColor="warn"
+          matBadgeOverlap="false"
+          [matBadgeHidden]="isMatBadgeHidden(encounter.lateralityCode)"> {{encounter.lateralityDisplay}} </td>
         </ng-container>
 
         <ng-container matColumnDef="encounterNote">

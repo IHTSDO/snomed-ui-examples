@@ -7,15 +7,36 @@
     width: 12px;
     height: 12px;
     padding: 12px;
-    /* width: 16px;
-    height: 16px;
-    padding: 4px; */
     background: #00A9E0;
     color: white;
     text-align: center;
     display: inline-block;
     margin-right: 5px;
     margin-bottom: 18px;
+}
+
+.badge {
+    background-color: #00A9E0;
+    border-radius: 12px; /* one half of ( (border * 2) + height + padding ) */
+    color: white;
+    font-size: 12px;
+    height: 16px; 
+    padding: 4px 3px 0 3px;
+    margin-left: -4px;
+    margin-right: 2px;
+    text-align: center;
+    min-width: 14px;
+}
+
+td.mat-badge.mat-badge-above:not(.mat-chip) .mat-badge-content:not(.mat-chip) {
+    top: 12px;
+}
+
+td.mat-badge.mat-badge-above:first-of-type .mat-badge-content:first-of-type {
+    left: 2px;
+}
+td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type {
+    padding-left: 28px;
 }
 
 table {

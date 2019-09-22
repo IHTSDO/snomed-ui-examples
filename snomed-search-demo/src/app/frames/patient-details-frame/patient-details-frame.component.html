@@ -4,7 +4,6 @@
     <mat-card-header>
       <div mat-card-avatar><mat-icon>person</mat-icon></div>
       <mat-card-title>Patient Details</mat-card-title>
-      <!-- <mat-card-subtitle>Personal details of the Patient</mat-card-subtitle> -->
     </mat-card-header>
     <mat-card-content>
       <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
@@ -21,7 +20,7 @@
       <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
         <mat-form-field appearance="outline" fxFlex>
             <mat-label>Name</mat-label>
-            <input matInput value="Mr Snowy Medd" [readonly]="true"/>
+            <input matInput value="Mr Snowy MEDD" [readonly]="true"/>
         </mat-form-field>
         <mat-form-field appearance="outline"  fxFlex>
             <mat-label>DOB</mat-label>
@@ -30,7 +29,7 @@
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Sex</mat-label>
           <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
-          <select matNativeControl formControlName="sex" [compareWith]="compareSex">
+          <select matNativeControl formControlName="sex" [compareWith]="compare">
             <option *ngFor="let option of sexValues" [ngValue]="option">{{option.display}}</option>
           </select>
         </mat-form-field>
@@ -41,7 +40,21 @@
         <mde-popover #sexPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
           <mat-card style="max-width: 600px">
             <mat-card-content>
-              To Be Completed
+                The Sex field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
+                <br><br>
+                Sex options are retrieved here using <b> 248153007 |Male| OR 248152002 |Female| 
+                  OR 32570691000036108 |Intersex| OR 32570681000036106 |Interderminate sex| 
+                  OR 407377005| Female-to-male transsexual| OR 407376001 | Male-to-female transsexual| </b>
+                <br><br>
+                The values in this field are an ideal candidate for a ValueSet. 
+                <br><br> 
+                ValueSets can be used to provide an order for the presented concepts 
+                (e.g. in some contexts, Male and Female are most commonly entered and should therefore appear at the 
+                top of the list to limit required keystrokes and mouse movement).
+                <br><br>
+                A version of a ValueSet can be specified to ensure that no new concepts appear without the opportunity for
+                them to be vetted.
+                <br><br>
           </mat-card-content>
           </mat-card>
         </mde-popover>
@@ -87,10 +100,8 @@
         <mat-form-field appearance="outline"  fxFlex>
           <mat-label>Smoking Status</mat-label>
           <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
-          <select matNativeControl formControlName="smokingStatus">
-            <option *ngFor="let option of smokingStatusValues" [value]="option">
-              {{option.display}}
-            </option>
+          <select matNativeControl formControlName="smokingStatus" [compareWith]="compare">
+            <option *ngFor="let option of smokingStatusValues" [ngValue]="option">{{option.display}}</option>
           </select>
         </mat-form-field>
         <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on smoking status"
@@ -100,14 +111,19 @@
         <mde-popover #smokingStatusPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
           <mat-card style="max-width: 600px">
             <mat-card-content>
-              To be completed
+              The smoking status field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
+              <br><br>
+              Smoking status options are retrieved here using <b>266919005 |Lifetime non-smoker | OR 77176002 | Current smoker | OR 8517006 |	Former smoker |</b>
+              <br><br>
+              The values in this field are an ideal candidate for a ValueSet. 
+              <br><br> 
             </mat-card-content>
           </mat-card>
         </mde-popover>
         <div fxFlex>
           <span matPrefix matTooltip="This field uses SNOMED CT" class="rb-circle"><b>S</b></span>
           <label class="mat-typography">Smoker Type: </label>
-          <mat-checkbox *ngFor="let option of smokerTypeValues" matTooltip="SNOMED CT code: {{option.value}}">
+          <mat-checkbox *ngFor="let option of smokerTypeValues" [disabled]="!smokingStatus" matTooltip="SNOMED CT code: {{option.value}}">
             {{option.display}}
           </mat-checkbox>
           <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on smoker type"
@@ -117,7 +133,16 @@
           <mde-popover #smokerTypePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
             <mat-card style="max-width: 600px">
               <mat-card-content>
-                To be completed
+                  This field is an example of using SNOMED CT enabled checkboxes. Checkboxes are appropriate to use 
+                  when <b>more than one option</b> could be selected, and there are only a couple of options.
+                  <br><br>
+                  The Smoker Type field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
+                  <br><br>
+                  Smoker Type options are retrieved here using <b>59978006 | Cigar smoker | OR 65568007 | Cigarette smoker | OR 82302008 | Pipe smoker |</b>
+                  <br><br>
+                  This values in this field are an ideal candidate for a ValueSet. 
+                  <br><br> 
+                  This field enables when the smoking status field has been populated with either a current or former smoker.
               </mat-card-content>
             </mat-card>
           </mde-popover>

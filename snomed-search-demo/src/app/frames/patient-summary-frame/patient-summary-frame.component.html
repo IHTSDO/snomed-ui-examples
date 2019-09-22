@@ -9,18 +9,39 @@
 
       <table mat-table fxFlex [dataSource]="reactionDataSource" class="mat-elevation-z8" #reactionTable>
         <ng-container matColumnDef="substanceDisplay">
-          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Substance </th>
-          <td mat-cell *matCellDef="let reaction" matTooltip="SNOMED CT code: {{reaction.substanceCode}}"> {{reaction.substanceDisplay}} </td>
+          <th mat-header-cell *matHeaderCellDef> Substance </th>
+          <td mat-cell *matCellDef="let reaction" 
+            matTooltip="SNOMED CT code: {{reaction.substanceCode}}"
+            matBadge="S" 
+            matBadgePosition="above before" 
+            matBadgeColor="warn"
+            matBadgeOverlap="false"
+            [matBadgeHidden]="isMatBadgeHidden(reaction.substanceCode)"> {{reaction.substanceDisplay}} </td>
         </ng-container>
   
         <ng-container matColumnDef="criticalityDisplay">
-          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Criticality </th>
-          <td mat-cell *matCellDef="let reaction" matTooltip="SNOMED CT code: {{reaction.criticalityCode}}"> {{reaction.criticalityDisplay}} </td>
+          <th mat-header-cell *matHeaderCellDef> Criticality </th>
+          <td mat-cell *matCellDef="let reaction" 
+            matTooltip="SNOMED CT code: {{reaction.criticalityCode}}"
+            matBadge="S" 
+            matBadgePosition="above before" 
+            matBadgeColor="warn"
+            matBadgeOverlap="false"
+            [matBadgeHidden]="isMatBadgeHidden(reaction.criticalityCode)"> {{reaction.criticalityDisplay}} </td>
         </ng-container>
   
         <ng-container matColumnDef="manifestationDisplay">
-          <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before" matBadgeColor="warn"> Manifestation </th>
-          <td mat-cell *matCellDef="let reaction" matTooltip="SNOMED CT code: {{reaction.manifestationCode}}"> {{reaction.manifestationDisplay}} </td>
+          <th mat-header-cell *matHeaderCellDef> Manifestation </th>
+          <td mat-cell *matCellDef="let reaction">
+            <mat-chip-list>
+                <span *ngFor="let react of reaction.manifestations">
+                  <mat-chip
+                    disableRipple
+                    matTooltip="SNOMED CT code: {{react.value}}">
+                  <span *ngIf="!isMatBadgeHidden(react.value)" mat-icon class="badge"><b>S</b></span> {{react.display}} </mat-chip>
+                </span>
+              </mat-chip-list>
+          </td> 
         </ng-container>
   
         <ng-container matColumnDef="verificationStatus">
@@ -111,8 +132,14 @@
         <table mat-table fxFlex [dataSource]="problemDataSource" class="mat-elevation-z8" #problemTable>
           
           <ng-container matColumnDef="codeDisplay">
-            <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before"> Description </th>
-            <td mat-cell *matCellDef="let problem" matTooltip="SNOMED CT code: {{problem.code}}"> {{problem.codeDisplay}} </td>
+            <th mat-header-cell *matHeaderCellDef> Description </th>
+            <td mat-cell *matCellDef="let problem" 
+              matTooltip="SNOMED CT code: {{problem.code}}"
+              matBadge="S" 
+              matBadgePosition="above before" 
+              matBadgeColor="warn"
+              matBadgeOverlap="false"
+              [matBadgeHidden]="isMatBadgeHidden(problem.code)"> {{problem.codeDisplay}} </td>
           </ng-container>
         
           <ng-container matColumnDef="date">
@@ -168,8 +195,14 @@
         <table mat-table fxFlex [dataSource]="procedureDataSource" class="mat-elevation-z8" #procedureTable>
           
           <ng-container matColumnDef="codeDisplay">
-            <th mat-header-cell *matHeaderCellDef matBadge="S" matBadgePosition="above before"> Procedure Name </th>
-            <td mat-cell *matCellDef="let procedure" matTooltip="SNOMED CT code: {{procedure.code}}"> {{procedure.codeDisplay}} </td>
+            <th mat-header-cell *matHeaderCellDef> Procedure Name </th>
+            <td mat-cell *matCellDef="let procedure" 
+              matTooltip="SNOMED CT code: {{procedure.code}}"
+              matBadge="S" 
+              matBadgePosition="above before" 
+              matBadgeColor="warn"
+              matBadgeOverlap="false"
+              [matBadgeHidden]="isMatBadgeHidden(procedure.code)"> {{procedure.codeDisplay}} </td>
           </ng-container>
         
           <ng-container matColumnDef="date">
