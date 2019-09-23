@@ -249,25 +249,6 @@ export class EncounterFrameComponent implements OnInit {
               this.encounterForm.get('laterality').setValue({value: latDetails['code'], display: latDetails['display']});
             }
             else {
-              // now check the lateralizable reference set to see if it is permissable to set the laterality of this concept
-              // need to do by hand as snowstorm does not support $validate-code lookup
-              var lateralizableSubscription = this.httpClient.get(this.snomedServer + '/ValueSet/$expand?url=http://snomed.info/sct?fhir_vs=refset/723264001')
-              .subscribe(data => {
-                var inRefset = false;
-                for (let refsetMember of data['expansion']['contains']) {
-                  if (refsetMember['code'] === bodySiteCode) {
-                    inRefset = true;
-                    break;
-                  }
-                }
-                if (inRefset) {
-                  this.encounterForm.get('laterality').enable();
-                }
-                else {
-                  this.encounterForm.get('laterality').disable();
-                }
-                lateralizableSubscription.unsubscribe();
-              });
 
               // Snowstorm returns this error 
               // "Invalid request: The FHIR endpoint on this server does not know how to handle GET operation[ValueSet/$validate-code] with parameters [[code, system, url]]"
@@ -287,13 +268,25 @@ export class EncounterFrameComponent implements OnInit {
               //   lateralizableSubscription.unsubscribe();
               // });
 
+              // now check the lateralizable reference set to see if it is permissable to set the laterality of this concept
+              var lateralizableSubscription = this.httpClient.get(this.snomedServer + '/ValueSet/$expand?_format=json&url=' + encodeURIComponent('http://snomed.info/sct') 
+              + encodeURIComponent('?fhir_vs=ecl/(') + encodeURIComponent(procedure.value + '.<< 363704007) AND ^723264001'))
+              .subscribe(data => {
+                if (data['expansion']['contains'] && data['expansion']['contains'].length > 0) {
+                  this.encounterForm.get('laterality').enable();
+                }
+                else {
+                  this.encounterForm.get('laterality').disable();
+                }
+               lateralizableSubscription.unsubscribe();
+              });
+
               // reset to laterality to blank in case a procedure was previously selected
               this.encounterForm.get('laterality').setValue(null);
             }
             queryLatSubscription.unsubscribe();
            });
 
-          this.encounterForm.get('laterality').enable();
         }
         else {
           // no procedure site, don't allow laterality to be specified
