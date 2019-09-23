@@ -45,7 +45,7 @@
           </mat-card>
         </mde-popover>
       </div>
-   
+
       <div class="form-row" fxLayout="row"  fxLayout.xs="column" fxLayoutGap="20px">
           <mat-form-field appearance="outline" fxFlex>
             <input type="text" placeholder="Diagnosis" aria-label="Diagnosis" matInput formControlName="diagnosis" [matAutocomplete]="autoDiagnosis">
@@ -94,90 +94,131 @@
             </mat-card-content>
             </mat-card>
           </mde-popover>
+
           <mat-form-field appearance="outline" fxFlex>
             <input type="text" placeholder="Diagnosis Note" aria-label="Diagnosis Note" matInput formControlName="diagnosisNote">
           </mat-form-field>
+
+          <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on diagnosis note"
+            [mdePopoverTriggerFor]="diagnosisNotePopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+            <b>i</b>
+          </button>
+          <mde-popover #diagnosisNotePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+            <mat-card style="max-width: 600px">
+              <mat-card-content>
+                The Diagnosis Note field allows a user to qualify the SNOMED CT concept in the Diagnosis field. In other words,
+                to add more detail to the SNOMED CT concept if necessary.
+                <br><br>
+                This field is one example of how to deal with a SNOMED CT concept that might not be specific enough. This 
+                approach allows the user to choose the closest available SNOMED CT concept and then provide the extra
+                details that are necessary.
+            </mat-card-content>
+            </mat-card>
+          </mde-popover>         
       </div>
     
-      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">       
-        <mat-form-field appearance="outline" fxFlex>
-          <input type="text" placeholder="Procedure" aria-label="Procedure" matInput formControlName="procedure" [matAutocomplete]="autoProcedure">
-          <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
-          <mat-autocomplete #autoProcedure="matAutocomplete" [displayWith]="displayFn.bind(this)" (optionSelected)='procedureSelected($event.option.value)'>
-            <mat-option *ngFor="let option of filteredProcedureValues" [value]="option">
-              {{option.display}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>        
-        <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on procedure"
-          [mdePopoverTriggerFor]="procedurePopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
-          <b>i</b>
-        </button>
-        <mde-popover #procedurePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
-          <mat-card style="max-width: 600px">
-            <mat-card-content>
-              The Procedure field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
-              <br><br>
-              Procedure options are retrieved here using <b>	&lt; 404684003 | Procedure |</b>
-              <br><br>
-              Options are filtered based on the user input and the field is implemented with an auto-complete component
-              to limit user typing.
-              <br><br>
-              If the terminology server supports it, returned results can be limited by using <b>count=X</b>. This may prevent
-              the sever from responding with a 'too costly' error and improve performance of the lookup and rendering.
-              <br><br>
-              This field is an example of where you might use the <b>modelling</b> in a SNOMED CT concept to pre-populate or enable
-              other fields. The Laterality field will pre-populate if you select a concept whose procedure site has been modelled
-              with a laterality (e.g. 735085002 | Excision of left breast lump |). 
-              <br><br>
-              The laterality will also become enabled for user input when a concept has a procedure site, but no laterality 
-              has been specified (e.g. 392021009 | Lumpectomy of breast |). This will be further refined to restrict enablement to 
-              procedure sites in the SNOMED CT lateralisable concept reference set.
-              <br><br>
-              If the terminology server supports it, returned results can be limited by using <b>count=X</b>. This may prevent
-              the sever from responding with a 'too costly' error and improve performance of the lookup and rendering.
-              <br><br>
-              If no options are retrieved, the field allows the user to enter their own value.
-            </mat-card-content>
-          </mat-card>
-        </mde-popover>
-        <mat-form-field appearance="outline"  fxFlex>
-          <mat-label>Laterality</mat-label>
-          <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
-          <select matNativeControl formControlName="laterality" [compareWith]="compareLaterality">
-            <option *ngFor="let option of lateralityValues" [ngValue]="option">
-              {{option.display}}
-            </option>
-          </select>
-        </mat-form-field>
-        <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on laterality"
-          [mdePopoverTriggerFor]="lateralityPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
-          <b>i</b>
-        </button>
-        <mde-popover #lateralityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
-          <mat-card style="max-width: 600px">
-            <mat-card-content>
-              The Laterality field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
-              <br><br>
-              Laterality options are retrieved here using <b>	&lt; 182353008 | 	Side |</b>
-              <br><br>
-              This field is an example of a field that is populated based on the <b> modelling </b> of a concept in another field. The Procedure field 
-              controls the enablement and available choices of this Laterality field. 
-              <br><br>
-              The Laterality field will pre-populate if you select a procedure concept whose procedure site has been modelled
-              with a laterality (e.g. 735085002 | Excision of left breast lump |). 
-              <br><br>
-              The laterality will also become enabled for user input when a procedure concept has a procedure site, but no laterality 
-              has been specified (e.g. 392021009 | Lumpectomy of breast |). This will be further refined to restrict enablement to 
-              procedure sites in the SNOMED CT lateralisable concept reference set.
-            </mat-card-content>
-          </mat-card>
-        </mde-popover>
-        <button mat-raised-button matTooltip="This button would add another procedure / laterality row for multiple procedure entry" class="dont-stretch" disabled>
-          <mat-icon>build</mat-icon> 
-            Add
-        </button>         
-      </div>
+      <mat-card class="procedure-card"> 
+        <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">       
+          <mat-form-field appearance="outline" fxFlex>
+            <input type="text" placeholder="Procedure" aria-label="Procedure" matInput formControlName="procedure" [matAutocomplete]="autoProcedure">
+            <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+            <mat-autocomplete #autoProcedure="matAutocomplete" [displayWith]="displayFn.bind(this)" (optionSelected)='procedureSelected($event.option.value)'>
+              <mat-option *ngFor="let option of filteredProcedureValues" [value]="option">
+                {{option.display}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>        
+          <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on procedure"
+            [mdePopoverTriggerFor]="procedurePopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+            <b>i</b>
+          </button>
+          <mde-popover #procedurePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+            <mat-card style="max-width: 600px">
+              <mat-card-content>
+                The Procedure field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
+                <br><br>
+                Procedure options are retrieved here using <b>	&lt; 404684003 | Procedure |</b>
+                <br><br>
+                Options are filtered based on the user input and the field is implemented with an auto-complete component
+                to limit user typing.
+                <br><br>
+                If the terminology server supports it, returned results can be limited by using <b>count=X</b>. This may prevent
+                the sever from responding with a 'too costly' error and improve performance of the lookup and rendering.
+                <br><br>
+                This field is an example of where you might use the <b>modelling</b> in a SNOMED CT concept to pre-populate or enable
+                other fields. The Laterality field will pre-populate if you select a concept whose procedure site has been modelled
+                with a laterality (e.g. 735085002 | Excision of left breast lump |). 
+                <br><br>
+                The laterality will also become enabled for user input when a concept has a procedure site, but no laterality 
+                has been specified (e.g. 392021009 | Lumpectomy of breast |). This will be further refined to restrict enablement to 
+                procedure sites in the SNOMED CT lateralisable concept reference set.
+                <br><br>
+                If the terminology server supports it, returned results can be limited by using <b>count=X</b>. This may prevent
+                the sever from responding with a 'too costly' error and improve performance of the lookup and rendering.
+                <br><br>
+                If no options are retrieved, the field allows the user to enter their own value.
+              </mat-card-content>
+            </mat-card>
+          </mde-popover>
+          <mat-form-field appearance="outline"  fxFlex>
+            <mat-label>Laterality</mat-label>
+            <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+            <select matNativeControl formControlName="laterality" [compareWith]="compareLaterality">
+              <option *ngFor="let option of lateralityValues" [ngValue]="option">
+                {{option.display}}
+              </option>
+            </select>
+          </mat-form-field>
+          <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on laterality"
+            [mdePopoverTriggerFor]="lateralityPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+            <b>i</b>
+          </button>
+          <mde-popover #lateralityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+            <mat-card style="max-width: 600px">
+              <mat-card-content>
+                The Laterality field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
+                <br><br>
+                Laterality options are retrieved here using <b>	&lt; 182353008 | 	Side |</b>
+                <br><br>
+                This field is an example of a field that is populated based on the <b> modelling </b> of a concept in another field. The Procedure field 
+                controls the enablement and available choices of this Laterality field. 
+                <br><br>
+                The Laterality field will pre-populate if you select a procedure concept whose procedure site has been modelled
+                with a laterality (e.g. 735085002 | Excision of left breast lump |). 
+                <br><br>
+                The laterality will also become enabled for user input when a procedure concept has a procedure site, but no laterality 
+                has been specified (e.g. 392021009 | Lumpectomy of breast |). This will be further refined to restrict enablement to 
+                procedure sites in the SNOMED CT lateralisable concept reference set.
+              </mat-card-content>
+            </mat-card>
+          </mde-popover>
+          <button mat-raised-button matTooltip="This button would add another procedure / laterality row for multiple procedure entry" class="dont-stretch" disabled>
+            <mat-icon>build</mat-icon> 
+              Add
+          </button>  
+          <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on laterality"
+            [mdePopoverTriggerFor]="lateralityPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+            <b>i</b>
+          </button>
+          <mde-popover #lateralityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+            <mat-card style="max-width: 600px">
+              <mat-card-content>
+                The Add button is an example of how you could supply extra SNOMED CT concepts for fields where each
+                concept must appear in a field by itself. 
+                <br><br>
+                In this situation, a procedure has a related laterality field so exta concepts cannot be added to 
+                a single procedure field.
+                <br><br>
+                When pressed, the add button would add an extra procedure / laterality field underneath the existing 
+                procedure / laterality fields.
+                <br><br>
+                See the manifestations field under the Allergies/Adverse Reactions tab for an example of entering
+                multiple SNOMED CT concepts into the same field.
+              </mat-card-content>
+            </mat-card>
+          </mde-popover>       
+        </div>
+      </mat-card>
     
       <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
           <mat-form-field appearance="outline" [style.fontSize.px]=12 fxFlex>

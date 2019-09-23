@@ -33,6 +33,12 @@ table {
     margin-top: 10px;
 }
 
+mat-card.procedure-card {
+    padding-top: 16px;
+    padding-bottom: 0px;
+    margin-bottom: 16px;
+}
+
 button.dont-stretch {
     align-self: flex-start;
     margin-top: 10px;
@@ -44,10 +50,11 @@ button.dont-stretch {
 
 td.mat-badge.mat-badge-above:not(.mat-chip) .mat-badge-content:not(.mat-chip) {
     top: 12px;
+    margin-left: -2px;
 }
 
 td.mat-badge.mat-badge-above:first-of-type .mat-badge-content:first-of-type {
-    left: 2px;
+    left: 6px;
 }
 td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type {
     padding-left: 28px;
