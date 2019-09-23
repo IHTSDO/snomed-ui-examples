@@ -250,16 +250,43 @@ export class EncounterFrameComponent implements OnInit {
             }
             else {
               // now check the lateralizable reference set to see if it is permissable to set the laterality of this concept
-              var lateralizableSubscription = this.httpClient.get(this.snomedServer + '/ValueSet/$validate-code?system=http://snomed.info/sct'
-              + '&code=' + bodySiteCode + '&url=http://snomed.info/sct?fhir_vs=refset/723264001')
+              // need to do by hand as snowstorm does not support $validate-code lookup
+              var lateralizableSubscription = this.httpClient.get(this.snomedServer + '/ValueSet/$expand?url=http://snomed.info/sct?fhir_vs=refset/723264001')
               .subscribe(data => {
-                if (data['parameter'][0].valueBoolean) {
+                var inRefset = false;
+                for (let refsetMember of data['expansion']['contains']) {
+                  if (refsetMember['code'] === bodySiteCode) {
+                    inRefset = true;
+                    break;
+                  }
+                }
+                if (inRefset) {
                   this.encounterForm.get('laterality').enable();
                 }
                 else {
                   this.encounterForm.get('laterality').disable();
                 }
+                lateralizableSubscription.unsubscribe();
               });
+
+              // Snowstorm returns this error 
+              // "Invalid request: The FHIR endpoint on this server does not know how to handle GET operation[ValueSet/$validate-code] with parameters [[code, system, url]]"
+              // keeping in case it gets enabled in the future
+              //
+              // now check the lateralizable reference set to see if it is permissable to set the laterality of this concept
+              // var lateralizableSubscription = this.httpClient.get(this.snomedServer + '/ValueSet/$validate-code?system=http://snomed.info/sct'
+              // + '&code=' + bodySiteCode + '&url=http://snomed.info/sct?fhir_vs=refset/723264001')
+              // .subscribe(data => {
+              //   if (data['parameter'][0].valueBoolean) {
+              //     + '&code=' + bodySiteCode + '&url=http://snomed.info/sct?fhir_vs=refset/723264001');
+              //     this.encounterForm.get('laterality').enable();
+              //   }
+              //   else {
+              //     this.encounterForm.get('laterality').disable();
+              //   }
+              //   lateralizableSubscription.unsubscribe();
+              // });
+
               // reset to laterality to blank in case a procedure was previously selected
               this.encounterForm.get('laterality').setValue(null);
             }
