@@ -11,7 +11,7 @@ GitHub Pages
 
 1.	‘clone’ the ‘master’ branch locally and change directory into snomed-ui/snomed-search-demo
 2.	Run $ npm install -g angular-cli-ghpages to install a module that handles publishing of Angular applications to GitHub
-3.	Run $ ng build --prod --base-href https://IHTSDO.github.io/snomed-ui/ to build the application ready for deployment (note: the final slash is crucial In –base-href is crucial)
+3.	Run $ ng build --prod --base-href https://IHTSDO.github.io/snomed-ui/ to build the application ready for deployment (note: the final slash is crucial in the URL following `–base-href`)
 4.	Run $ ngh --no-silent -d dist/snomed-search-demo to deploy the application to https://IHTSDO.github.io/snomed-ui/
 
 Locally
