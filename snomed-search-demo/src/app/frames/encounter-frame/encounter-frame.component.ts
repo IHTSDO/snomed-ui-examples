@@ -244,9 +244,16 @@ export class EncounterFrameComponent implements OnInit {
           + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent(procedure.value + '.<< 363704007.272741003'))
            .subscribe(data => {
             if (data.expansion.contains) {
-              var latDetails = data.expansion.contains[0];
+              console.log("laterality info", data.expansion.contains)
               this.encounterForm.get('laterality').disable();
-              this.encounterForm.get('laterality').setValue({value: latDetails['code'], display: latDetails['display']});
+              if (data.expansion.contains.length > 1) {
+                // left and right
+                this.encounterForm.get('laterality').setValue({value: '51440002', display: 'Right and left'});
+              }
+              else {
+                var latDetails = data.expansion.contains[0];
+                this.encounterForm.get('laterality').setValue({value: latDetails['code'], display: latDetails['display']});
+                }
             }
             else {
 
@@ -281,7 +288,7 @@ export class EncounterFrameComponent implements OnInit {
                lateralizableSubscription.unsubscribe();
               });
 
-              // reset to laterality to blank in case a procedure was previously selected
+              // reset the laterality to blank in case a procedure was previously selected
               this.encounterForm.get('laterality').setValue(null);
             }
             queryLatSubscription.unsubscribe();
