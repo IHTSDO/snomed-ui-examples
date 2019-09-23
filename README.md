@@ -16,12 +16,12 @@ GitHub Pages
 
 Locally
 
-1.	‘clone’ the ‘master’ branch locally and change directory into snomed-ui/snomed-search-demo
+1.	‘clone’ the ‘master’ branch locally and change directory into `snomed-ui/snomed-search-demo`
 2.	If not already installed, `npm install -g @angular/cli`
-3.	Run `ng serve` for a dev server. Navigate to [http://localhost:4200/].
+3.	Run `ng serve` for a dev server. Navigate to http://localhost:4200/.
 
-Further information can be found under [snomed-ui/snomed-serch-demo/README.md]
+Further information can be found under `snomed-ui/snomed-serch-demo/README.md`
 
-To add / change the available terminology servers, open [snomed-ui/snomed-search-demo/src/app/app.component.ts] and 
+To add / change the available terminology servers, open `snomed-ui/snomed-search-demo/src/app/app.component.ts` and 
 change the property ‘terminologyServers’ as required.  ‘snomedServer’ can be altered to change the default server.
 
