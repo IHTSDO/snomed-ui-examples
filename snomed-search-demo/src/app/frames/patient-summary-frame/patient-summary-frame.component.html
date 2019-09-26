@@ -1,0 +1,257 @@
+<div class="container" fxLayout="column" fxLayoutGap="20px">
+    
+  <mat-card class="patient-details-card">
+    <mat-card-header>
+      <div mat-card-avatar><mat-icon>warning</mat-icon></div>
+      <mat-card-title>Allergies / Adverse Reactions</mat-card-title>
+    </mat-card-header>
+    <mat-card-content fxLayout="column">
+
+      <table mat-table fxFlex [dataSource]="reactionDataSource" class="mat-elevation-z8" #reactionTable>
+        <ng-container matColumnDef="substanceDisplay">
+          <th mat-header-cell *matHeaderCellDef> Substance </th>
+          <td mat-cell *matCellDef="let reaction" 
+            matTooltip="SNOMED CT code: {{reaction.substanceCode}}"
+            matBadge="S" 
+            matBadgePosition="above before" 
+            matBadgeColor="warn"
+            matBadgeOverlap="false"
+            [matBadgeHidden]="isMatBadgeHidden(reaction.substanceCode)"> {{reaction.substanceDisplay}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="criticalityDisplay">
+          <th mat-header-cell *matHeaderCellDef> Criticality </th>
+          <td mat-cell *matCellDef="let reaction" 
+            matTooltip="SNOMED CT code: {{reaction.criticalityCode}}"
+            matBadge="S" 
+            matBadgePosition="above before" 
+            matBadgeColor="warn"
+            matBadgeOverlap="false"
+            [matBadgeHidden]="isMatBadgeHidden(reaction.criticalityCode)"> {{reaction.criticalityDisplay}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="manifestationDisplay">
+          <th mat-header-cell *matHeaderCellDef> Manifestation </th>
+          <td mat-cell *matCellDef="let reaction">
+            <mat-chip-list>
+                <span *ngFor="let react of reaction.manifestations">
+                  <mat-chip
+                    disableRipple
+                    matTooltip="SNOMED CT code: {{react.value}}">
+                  <span *ngIf="!isMatBadgeHidden(react.value)" mat-icon class="badge"><b>S</b></span> {{react.display}} </mat-chip>
+                </span>
+              </mat-chip-list>
+          </td> 
+        </ng-container>
+  
+        <ng-container matColumnDef="verificationStatus">
+          <th mat-header-cell *matHeaderCellDef> Verification Status </th>
+          <td mat-cell *matCellDef="let reaction"> {{reaction.verificationStatus}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="comment">
+          <th mat-header-cell *matHeaderCellDef> Comment </th>
+          <td mat-cell *matCellDef="let reaction"> {{reaction.comment}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedReactionColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedReactionColumns;"></tr>
+      </table>
+  
+  
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="under-construction">
+      <mat-card-header>
+        <div mat-card-avatar><mat-icon>build</mat-icon></div>        
+        <!-- <div mat-card-avatar><mat-icon>toggle_on</mat-icon></div> -->
+        <mat-card-title>Current Medication</mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="column">  
+        <table mat-table fxFlex [dataSource]="medicationDataSource" class="mat-elevation-z8" #medicationTable class="under-construction">
+          
+          <ng-container matColumnDef="name">
+            <th mat-header-cell class="under-construction" *matHeaderCellDef> Name </th>
+            <td mat-cell class="under-construction" *matCellDef="let medication"> {{medication.name}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="strength">
+            <th mat-header-cell class="under-construction" *matHeaderCellDef> Strength </th>
+            <td mat-cell class="under-construction" *matCellDef="let medication"> {{medication.strength}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="form">
+              <th mat-header-cell class="under-construction" *matHeaderCellDef> Form </th>
+              <td mat-cell class="under-construction" *matCellDef="let medication"> {{medication.form}} </td>
+            </ng-container>
+  
+          <ng-container matColumnDef="route">
+            <th mat-header-cell class="under-construction" *matHeaderCellDef> Route </th>
+            <td mat-cell class="under-construction" *matCellDef="let medication"> {{medication.route}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="freq">
+              <th mat-header-cell class="under-construction" *matHeaderCellDef> Frequency </th>
+              <td mat-cell class="under-construction" *matCellDef="let medication"> {{medication.freq}} </td>
+            </ng-container>
+        
+          <ng-container matColumnDef="duration">
+            <th mat-header-cell class="under-construction" *matHeaderCellDef> Duration </th>
+            <td mat-cell class="under-construction" *matCellDef="let medication"> {{medication.duration}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="instruction">
+              <th mat-header-cell class="under-construction" *matHeaderCellDef> Instruction </th>
+              <td mat-cell class="under-construction" *matCellDef="let medication"> {{medication.instruction}} </td>
+            </ng-container>
+  
+          <ng-container matColumnDef="clinicalIndication">
+            <th mat-header-cell class="under-construction" *matHeaderCellDef> Clinical Indication </th>
+            <td mat-cell class="under-construction" *matCellDef="let medication"> {{medication.clinicalIndication}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="comment">
+            <th mat-header-cell class="under-construction" *matHeaderCellDef> Comment </th>
+            <td mat-cell class="under-construction" *matCellDef="let medication"> {{medication.comment}} </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedMedicationColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedMedicationColumns;"></tr>
+        </table>
+  
+      </mat-card-content>
+    </mat-card>
+  
+    <mat-card>
+      <mat-card-header>
+        <div mat-card-avatar><mat-icon>power_off</mat-icon></div>
+        <mat-card-title>Current Problems</mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="column">  
+        <table mat-table fxFlex [dataSource]="problemDataSource" class="mat-elevation-z8" #problemTable>
+          
+          <ng-container matColumnDef="codeDisplay">
+            <th mat-header-cell *matHeaderCellDef> Description </th>
+            <td mat-cell *matCellDef="let problem" 
+              matTooltip="SNOMED CT code: {{problem.code}}"
+              matBadge="S" 
+              matBadgePosition="above before" 
+              matBadgeColor="warn"
+              matBadgeOverlap="false"
+              [matBadgeHidden]="isMatBadgeHidden(problem.code)"> {{problem.codeDisplay}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef> Onset Date </th>
+            <td mat-cell *matCellDef="let problem"> {{problem.date}} </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedProblemColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedProblemColumns;"></tr>
+        </table>
+  
+      </mat-card-content>
+    </mat-card>
+  
+    <mat-card class="under-construction">
+      <mat-card-header>
+        <div mat-card-avatar><mat-icon>build</mat-icon></div>
+        <!-- <div mat-card-avatar><mat-icon>search</mat-icon></div> -->
+        <mat-card-title>Investigations</mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="column">  
+        <table mat-table fxFlex [dataSource]="investigationDataSource" class="mat-elevation-z8" #investigationTable class="under-construction"> 
+          
+          <ng-container matColumnDef="test">
+            <th mat-header-cell class="under-construction" *matHeaderCellDef> Test </th>
+            <td mat-cell class="under-construction" *matCellDef="let investigation"> {{investigation.test}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="date">
+            <th mat-header-cell class="under-construction" *matHeaderCellDef> Date </th>
+            <td mat-cell class="under-construction" *matCellDef="let investigation"> {{investigation.date}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="result">
+              <th mat-header-cell class="under-construction" *matHeaderCellDef> Result </th>
+              <td mat-cell class="under-construction" *matCellDef="let investigation"> {{investigation.result}} </td>
+            </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedInvestigationColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedInvestigationColumns;"></tr>
+        </table>
+      
+      </mat-card-content>
+    </mat-card>
+  
+    <mat-card>
+      <mat-card-header>
+        <div mat-card-avatar><mat-icon>healing</mat-icon></div>
+        <mat-card-title>Procedures</mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="column">  
+
+        <table mat-table fxFlex [dataSource]="procedureDataSource" class="mat-elevation-z8" #procedureTable>
+          
+          <ng-container matColumnDef="codeDisplay">
+            <th mat-header-cell *matHeaderCellDef> Procedure Name </th>
+            <td mat-cell *matCellDef="let procedure" 
+              matTooltip="SNOMED CT code: {{procedure.code}}"
+              matBadge="S" 
+              matBadgePosition="above before" 
+              matBadgeColor="warn"
+              matBadgeOverlap="false"
+              [matBadgeHidden]="isMatBadgeHidden(procedure.code)"> {{procedure.codeDisplay}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef> Date </th>
+            <td mat-cell *matCellDef="let procedure"> {{procedure.date}} </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedProcedureColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedProcedureColumns;"></tr>
+        </table>
+      
+      </mat-card-content>
+    </mat-card>  
+  
+    <mat-card class="under-construction">
+      <mat-card-header>
+        <!-- <div mat-card-avatar><mat-icon>colorize</mat-icon></div> -->
+        <div mat-card-avatar><mat-icon>build</mat-icon></div>
+        <mat-card-title>Immunizations</mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="column">  
+
+          <table mat-table fxFlex [dataSource]="vaccinationDataSource" class="mat-elevation-z8" #vaccinationTable class="under-construction">
+            
+            <ng-container matColumnDef="name">
+              <th mat-header-cell class="under-construction" *matHeaderCellDef> Name </th>
+              <td mat-cell class="under-construction" *matCellDef="let vaccination"> {{vaccination.name}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="brandName">
+              <th mat-header-cell class="under-construction" *matHeaderCellDef> Brand Name </th>
+              <td mat-cell class="under-construction" *matCellDef="let vaccination"> {{vaccination.brandName}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="substance">
+              <th mat-header-cell class="under-construction" *matHeaderCellDef> Substance </th>
+              <td mat-cell class="under-construction" *matCellDef="let vaccination"> {{vaccination.substance}} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="date">
+              <th mat-header-cell class="under-construction" *matHeaderCellDef> Date </th>
+              <td mat-cell class="under-construction" *matCellDef="let vaccination"> {{vaccination.date}} </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedVaccinationColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedVaccinationColumns;"></tr>
+          </table>
+      </mat-card-content>
+    </mat-card>
+  
+
+</div>    

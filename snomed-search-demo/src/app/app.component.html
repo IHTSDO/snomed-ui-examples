@@ -1,0 +1,112 @@
+<ng-container>
+  <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxFlex>
+      <a>
+        SNOMED CT Search Demo
+      </a>
+    </div>      
+    <div fxFlex>
+        <mat-form-field appearance="outline" [style.fontSize.px]=14 fxFlex  style="margin-bottom: -20px">
+            <mat-label>Snomed Terminology Server</mat-label>
+            <mat-select [(value)]="snomedServer" (selectionChange)="onSnomedServerSelectionChange($event)">
+              <mat-option *ngFor="let ts of terminologyServers" value={{ts}}>
+                {{ts}}
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+  </mat-toolbar> 
+  <div class="allergyDetails">
+
+      <mat-grid-list cols="6" rowHeight="50px">
+        <mat-grid-tile>
+            <mat-list>
+                <mat-list-item> <mat-icon>warning</mat-icon> High Adverse Reaction Risks </mat-list-item>
+            </mat-list>
+        </mat-grid-tile>
+        <mat-grid-tile *ngFor="let alert of getAlerts()">
+            <mat-list>
+                <mat-list-item> {{alert.substanceDisplay}}</mat-list-item>
+            </mat-list>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  <div class="patientDetails">
+    <mat-grid-list cols="6" rowHeight="50px">
+      <mat-grid-tile>
+          <mat-list>
+              <mat-list-item> MEDD, Snowy </mat-list-item>
+          </mat-list>
+      </mat-grid-tile>
+      <mat-grid-tile>
+          <mat-list>
+              <mat-list-item> DOB: 2001-08-28 </mat-list-item>
+          </mat-list>
+      </mat-grid-tile>
+      <mat-grid-tile>
+          <mat-list>
+              <mat-list-item> Age: {{getAge('2001-08-28')}} </mat-list-item>
+          </mat-list>
+      </mat-grid-tile>
+      <mat-grid-tile>
+          <mat-list>
+              <mat-list-item> Sex: {{getSex().display}} </mat-list-item>
+          </mat-list>
+      </mat-grid-tile>
+      <mat-grid-tile>
+          <mat-list>
+              <mat-list-item> MRN: 123456 </mat-list-item>
+          </mat-list>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side" opened [fixedInViewport]="false">
+      <mat-button-toggle-group fxLayout="column" fxLayoutAlign="space-around stretch" value="encounter">
+        <mat-button-toggle value="patient-details" aria-label="Patient Details" (change)="sideMenuChanged($event)">
+          Patient Details    
+        </mat-button-toggle>
+        <mat-button-toggle value="encounter" aria-label="History" (change)="sideMenuChanged($event)">
+          Encounter    
+        </mat-button-toggle>
+        <mat-button-toggle value="allergies-adverse-reactions" aria-label="Physical" (change)="sideMenuChanged($event)">
+          Allergies / Adverse Reactions
+        </mat-button-toggle>
+        <mat-button-toggle matTooltip="Not implemented in this demo" disabled value="patient-summary" aria-label="Medication">
+          <mat-icon>build</mat-icon> 
+          Medication    
+        </mat-button-toggle>
+        <mat-button-toggle matTooltip="Not implemented in this demo" disabled value="patient-summary" aria-label="Investigations">
+          <mat-icon>build</mat-icon>           
+          Investigations    
+        </mat-button-toggle>   
+        <mat-button-toggle matTooltip="Not implemented in this demo" disabled value="patient-summary" aria-label="Immunizations">
+          <mat-icon>build</mat-icon> 
+          Immunizations    
+        </mat-button-toggle>        
+        <mat-button-toggle value="patient-summary" aria-label="Patient Details" (change)="sideMenuChanged($event)">
+          Patient Summary    
+        </mat-button-toggle>
+        <mat-button-toggle disabled>  
+          &nbsp; 
+        </mat-button-toggle>
+        <mat-button-toggle disabled>  
+          &nbsp; 
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+      
+      <div>
+        <img class="centred-image" src="./assets/images/snomedIntl-brand-RGB-120px.jpg">
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <app-patient-details-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'patient-details'"></app-patient-details-frame> 
+      <app-encounter-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'encounter'"></app-encounter-frame>
+      <app-reaction-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'allergies-adverse-reactions'"></app-reaction-frame> 
+      <app-patient-summary-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'patient-summary'"></app-patient-summary-frame>     
+  </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</ng-container>
