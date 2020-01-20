@@ -49,9 +49,12 @@ export class ReactionFrameComponent implements OnInit {
     + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 105590001 OR < 373873005')
     + '&count=20&includeDesignations=true';
 
-    const MANIFESTATION_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
-    + encodeURIComponent('?fhir_vs=isa/404684003')
+    const MANIFESTATION_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://aehrc.com/valueset/reaction-manifestation') 
     + '&count=20&includeDesignations=true';
+    // SI Version
+    // const MANIFESTATION_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
+    // + encodeURIComponent('?fhir_vs=isa/404684003')
+    // + '&count=20&includeDesignations=true';
 
     var substanceFilter;
     this.substanceChangeSubsciption = this.reactionForm.get('substance').valueChanges

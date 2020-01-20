@@ -113,9 +113,9 @@
         <mde-popover #manifestationPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
           <mat-card style="max-width: 600px">
             <mat-card-content>
-              The manifestation field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
-              <br><br>
-              Manifestation options are retrieved here using <b>&lt; 404684003 | Clinical finding | </b>
+              The manifestation field is bound to <b> http://aehrc.com/valueset/reaction-manifestation
+              “Reaction manifestation” value set </b> developed for the Primary Care Data Quality Foundations work 
+              program hosted on a FHIR-Based, SNOMED-CT terminology server.
               <br><br>
               Options are filtered based on the user input and the field is implemented with an auto-complete component
               to limit user typing.

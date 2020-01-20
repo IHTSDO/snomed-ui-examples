@@ -30,9 +30,9 @@
         <mde-popover #encounterReasonPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
           <mat-card style="max-width: 600px">
             <mat-card-content>
-              The Reason for Encounter field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
-              <br><br>
-              Reason for Encounter options are retrieved here using <b>	&lt; 404684003 | Clinical finding | OR &lt; 71388002 | 	Procedure | OR &lt; 243796009 |	Situation with explicit context | OR &lt; 272379006 |	Event |</b>
+              The Reason for Encounter field is bound to the <b> http://aehrc.com/valueset/reason-for-encounter
+              “Reason for Encounter” value set </b> developed for the Primary Care Data Quality Foundations work 
+              program hosted on a FHIR-Based, SNOMED-CT terminology server. 
               <br><br>
               Options are filtered based on the user input and the field is implemented with an auto-complete component
               to limit user typing.
@@ -69,9 +69,9 @@
           <mde-popover #diagnosisPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
             <mat-card style="max-width: 600px">
               <mat-card-content>
-                The Diagnosis field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
-                <br><br>
-                Diagnosis options are retrieved here using <b>	&lt; 404684003 | Clinical finding |</b>
+                The Diagnosis field is bound to the <b> https://healthterminologies.gov.au/fhir/ValueSet/clinical-condition-1 
+                “Clinical condition” value set </b> developed by the Australian Digital Health Agency which is hosted on a
+                FHIR-Based, SNOMED-CT terminology server. 
                 <br><br>
                 By turning on the boost toggle, located next to the Diagnosis field, you can increase the prominence of
                 a set of concepts, whilst still allowing the entry of all possible clinical findings. This technique can
@@ -135,9 +135,9 @@
           <mde-popover #procedurePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
             <mat-card style="max-width: 600px">
               <mat-card-content>
-                The Procedure field uses SNOMED CT Expression Constraint Language (ECL) to retrieve all options from a FHIR-Based, SNOMED-CT terminoloy server.
-                <br><br>
-                Procedure options are retrieved here using <b>	&lt; 404684003 | Procedure |</b>
+                The Procedure field is bound to the <b> https://healthterminologies.gov.au/fhir/ValueSet/procedure-1 
+                “Procedure” value set </b> developed by the Australian Digital Health Agency which is hosted on a 
+                FHIR-Based, SNOMED-CT terminology server.
                 <br><br>
                 Options are filtered based on the user input and the field is implemented with an auto-complete component
                 to limit user typing.

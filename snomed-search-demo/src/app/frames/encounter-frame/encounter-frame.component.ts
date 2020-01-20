@@ -78,13 +78,19 @@ export class EncounterFrameComponent implements OnInit {
 
     this.timestamp = new Date();
 
-    const ENCOUNTER_REASON_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
-    + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 404684003 OR < 71388002 OR < 243796009 OR < 272379006')
+    const ENCOUNTER_REASON_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://aehrc.com/valueset/reason-for-encounter') 
     + '&count=20&includeDesignations=true';
+    // SI Version
+    // const ENCOUNTER_REASON_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
+    // + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 404684003 OR < 71388002 OR < 243796009 OR < 272379006')
+    // + '&count=20&includeDesignations=true';
 
-    const DIAGNOSIS_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
-    + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 404684003')
+    const DIAGNOSIS_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('https://healthterminologies.gov.au/fhir/ValueSet/clinical-condition-1') 
     + '&count=20&includeDesignations=true';
+    // SI Version
+    // const DIAGNOSIS_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
+    // + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 404684003')
+    // + '&count=20&includeDesignations=true';
 
     // should be a value set
     const PREFERRED_DIAGNOSIS_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
@@ -93,10 +99,12 @@ export class EncounterFrameComponent implements OnInit {
     '13644009 OR 65323003 OR 85898001 OR 371125006 OR 70995007 OR 59621000 OR 233873004 OR 11687002 OR 66931009 OR ' +
     '14140009 OR 34486009 OR 45007003 OR 89627008 OR 5291005 OR 40930008') + '&includeDesignations=true'
 
-
-    const PROCEDURE_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
-    + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 71388002')
+    const PROCEDURE_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('https://healthterminologies.gov.au/fhir/ValueSet/procedure-1') 
     + '&count=20&includeDesignations=true';
+    // SI Version
+    // const PROCEDURE_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
+    // + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 71388002')
+    // + '&count=20&includeDesignations=true';
 
     const LATERALITY_URL = 	this.snomedServer + '/ValueSet/$expand?_format=json&url=' + encodeURIComponent('http://snomed.info/sct') 
     + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 182353008') 
