@@ -1,0 +1,163 @@
+<div [formGroup]="searchComparisonForm" class="container" fxLayout="column" fxLayoutGap="20px">
+    
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar><mat-icon>search</mat-icon></div>
+      <mat-card-title>Search Comparisons</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+      <mat-card>
+        <mat-card-subtitle>Multiple Descriptions</mat-card-subtitle>
+        <mat-card-content>
+          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">     
+
+            <mat-form-field appearance="outline" fxFlex>
+              <input type="text" placeholder="Diagnosis" aria-label="Diagnosis" matInput formControlName="goodDiagnosis0" [matAutocomplete]="autoGoodDiagnosis0">
+              <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+              <mat-autocomplete #autoGoodDiagnosis0="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let option of filteredGoodDiagnosis0Values" [value]="option">
+                  {{option.display}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex>
+              <input type="text" placeholder="Diagnosis" aria-label="Diagnosis" matInput formControlName="badDiagnosis0" [matAutocomplete]="autoBadDiagnosis0">
+              <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+              <mat-autocomplete #autoBadDiagnosis0="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let option of filteredBadDiagnosis0Values" [value]="option">
+                  {{option.display}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+          </div>
+        </mat-card-content>
+        <mat-card-footer>Avoid multiple descriptions of the same concept.</mat-card-footer>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-subtitle>Alphabetical Order</mat-card-subtitle>
+        <mat-card-content>
+          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">     
+
+            <mat-form-field appearance="outline" fxFlex>
+              <input type="text" placeholder="Diagnosis" aria-label="Diagnosis" matInput formControlName="goodDiagnosis1" [matAutocomplete]="autoGoodDiagnosis1">
+              <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+              <mat-autocomplete #autoGoodDiagnosis1="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let option of filteredGoodDiagnosis1Values" [value]="option">
+                  {{option.display}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex>
+              <input type="text" placeholder="Diagnosis" aria-label="Diagnosis" matInput formControlName="badDiagnosis1" [matAutocomplete]="autoBadDiagnosis1">
+              <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+              <mat-autocomplete #autoBadDiagnosis1="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let option of filteredBadDiagnosis1Values" [value]="option">
+                  {{option.display}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+          </div>
+        </mat-card-content>
+        <mat-card-footer>Do not sort options alphabetically.</mat-card-footer>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-subtitle>Binding</mat-card-subtitle>
+        <mat-card-content>
+          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">     
+
+            <mat-form-field appearance="outline" fxFlex>
+              <input type="text" placeholder="Diagnosis" aria-label="Diagnosis" matInput formControlName="goodDiagnosis2" [matAutocomplete]="autoGoodDiagnosis2">
+              <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+              <mat-autocomplete #autoGoodDiagnosis2="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let option of filteredGoodDiagnosis2Values" [value]="option">
+                  {{option.display}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex>
+              <input type="text" placeholder="Diagnosis" aria-label="Diagnosis" matInput formControlName="badDiagnosis2" [matAutocomplete]="autoBadDiagnosis2">
+              <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+              <mat-autocomplete #autoBadDiagnosis2="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let option of filteredBadDiagnosis2Values" [value]="option">
+                  {{option.display}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+          </div>
+        </mat-card-content>
+        <mat-card-footer>Always bind to a subset of SNOMED-CT, never allow all concepts in SNOMED-CT</mat-card-footer>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-subtitle>Pressing ENTER to obtain options</mat-card-subtitle>
+        <mat-card-content>
+          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">     
+
+            <mat-form-field appearance="outline" fxFlex>
+              <input type="text" placeholder="Diagnosis" aria-label="Diagnosis" matInput formControlName="goodDiagnosis3" [matAutocomplete]="autoGoodDiagnosis3">
+              <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+              <mat-autocomplete #autoGoodDiagnosis3="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let option of filteredGoodDiagnosis3Values" [value]="option">
+                  {{option.display}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex>
+              <input type="text" placeholder="Diagnosis" aria-label="Diagnosis" matInput formControlName="badDiagnosis3" [matAutocomplete]="autoBadDiagnosis3" #myAutocompleteTrigger3="matAutocompleteTrigger" [matAutocompleteDisabled]="isAutoComplete3Disabled()" (keyup.enter)="on3Enter()"  (ngModelChange)="on3Change($event)">
+              <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+              <mat-autocomplete #autoBadDiagnosis3="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let option of filteredBadDiagnosis3Values" [value]="option">
+                  {{option.display}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+          </div>
+        </mat-card-content>
+        <mat-card-footer>Options can be dynamically displayed</mat-card-footer>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-subtitle>Multiple bad search practices</mat-card-subtitle>
+        <mat-card-content>
+          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">     
+
+            <mat-form-field appearance="outline" fxFlex>
+              <input type="text" placeholder="Diagnosis" aria-label="Diagnosis" matInput formControlName="goodDiagnosis4" [matAutocomplete]="autoGoodDiagnosis4">
+              <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+              <mat-autocomplete #autoGoodDiagnosis4="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let option of filteredGoodDiagnosis4Values" [value]="option">
+                  {{option.display}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex>
+              <input type="text" placeholder="Diagnosis" aria-label="Diagnosis" matInput formControlName="badDiagnosis4" [matAutocomplete]="autoBadDiagnosis4" #myAutocompleteTrigger4="matAutocompleteTrigger" [matAutocompleteDisabled]="isAutoComplete4Disabled()" (keyup.enter)="on4Enter()"  (ngModelChange)="on4Change($event)">
+              <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+              <mat-autocomplete #autoBadDiagnosis4="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let option of filteredBadDiagnosis4Values" [value]="option">
+                  {{option.display}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+          </div>
+        </mat-card-content>
+        <mat-card-footer>Locating the correct SNOMED-CT concept becomes a near impossible task.</mat-card-footer>
+      </mat-card>
+
+    </mat-card-content>
+  </mat-card>
+
+</div>    

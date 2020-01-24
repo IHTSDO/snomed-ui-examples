@@ -65,6 +65,10 @@ export class AppComponent {
     return this.demoModelService.getSex();
   }
 
+  getGender() {
+    return this.demoModelService.getGender();
+  }
+
   getAge(dob: string) {
     var today = new Date();
     var birthDate = new Date(dob);

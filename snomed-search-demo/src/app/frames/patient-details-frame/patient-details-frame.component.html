@@ -26,6 +26,9 @@
             <mat-label>DOB</mat-label>
             <input matInput value="2001-08-28" [readonly]="true"/>
         </mat-form-field>
+      </div>
+
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Sex</mat-label>
           <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
@@ -58,6 +61,13 @@
           </mat-card-content>
           </mat-card>
         </mde-popover>
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Gender</mat-label>
+          <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+          <select matNativeControl formControlName="gender" [compareWith]="compare">
+            <option *ngFor="let option of genderValues" [ngValue]="option">{{option.display}}</option>
+          </select>
+        </mat-form-field>
       </div>
     
       <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
@@ -147,8 +157,87 @@
             </mat-card>
           </mde-popover>
         </div>
-    
       </div>
+      <mat-card>
+        <mat-card-header>
+          <div mat-card-avatar><mat-icon>group</mat-icon></div>
+          <mat-card-title>Family History</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">           
+            <mat-form-field appearance="outline" fxFlex>
+              <input type="text" placeholder="Family Member" aria-label="Family Member" matInput formControlName="familyRelationship" [matAutocomplete]="autoFamilyMember">
+              <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+              <mat-autocomplete #autoFamilyMember="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let option of filteredFamilyRelationshipValues" [value]="option">
+                  {{option.display}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex>
+              <input type="text" placeholder="Problem" aria-label="Problem" matInput formControlName="familyProblem" [matAutocomplete]="autoProblem">
+              <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>
+              <mat-autocomplete #autoProblem="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let option of filteredFamilyProblemValues" [value]="option">
+                  {{option.display}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field appearance="outline"  fxFlex>
+              <mat-label>Age at Onset</mat-label>
+              <input matInput formControlName="familyAgeOnset"/>
+            </mat-form-field>
+            <mat-form-field appearance="outline"  fxFlex>
+              <mat-label>Age at Death</mat-label>
+              <input matInput formControlName="familyAgeDeath"/>
+            </mat-form-field>
+            <button mat-raised-button (click)="onSaveFamilyHistory()">
+              <mat-icon>add</mat-icon> 
+              Add 
+            </button>
+          </div>
+
+          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">      
+              <table mat-table fxFlex [dataSource]="familyHistoryDataSource" class="mat-elevation-z8" #familyHistoryTable>
+                <ng-container matColumnDef="familyRelationship">
+                  <th mat-header-cell *matHeaderCellDef> Relationship </th>
+                  <td mat-cell *matCellDef="let familyHistory" 
+                    matTooltip="SNOMED CT code: {{familyHistory.relationshipCode}}"
+                    matBadge="S" 
+                    matBadgePosition="above before" 
+                    matBadgeColor="warn"
+                    matBadgeOverlap="false"
+                    [matBadgeHidden]="isMatBadgeHidden(familyHistory.relationshipCode)"> {{familyHistory.relationshipDisplay}} </td>
+                </ng-container>
+          
+                <ng-container matColumnDef="familyProblem">
+                  <th mat-header-cell *matHeaderCellDef> Problem </th>
+                  <td mat-cell *matCellDef="let familyHistory" 
+                    matTooltip="SNOMED CT code: {{familyHistory.problemCode}}"
+                    matBadge="S" 
+                    matBadgePosition="above before" 
+                    matBadgeColor="warn"
+                    matBadgeOverlap="false"
+                    [matBadgeHidden]="isMatBadgeHidden(familyHistory.problemCode)"> {{familyHistory.problemDisplay}} </td>
+                </ng-container>
+          
+                <ng-container matColumnDef="familyAgeOnset">
+                  <th mat-header-cell *matHeaderCellDef> Age at Onset </th>
+                  <td mat-cell *matCellDef="let familyHistory" >{{familyHistory.onsetAge}} </td>
+                </ng-container>
+          
+                <ng-container matColumnDef="familyAgeDeath">
+                  <th mat-header-cell *matHeaderCellDef> Age at Death </th>
+                  <td mat-cell *matCellDef="let familyHistory"> {{familyHistory.deceasedAge}} </td>
+                </ng-container>
+        
+                <tr mat-header-row *matHeaderRowDef="displayedFamilyHistoryColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedFamilyHistoryColumns;"></tr>
+              </table>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
     </mat-card-content>
   </mat-card>
 

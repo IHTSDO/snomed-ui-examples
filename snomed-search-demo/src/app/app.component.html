@@ -54,6 +54,11 @@
           </mat-list>
       </mat-grid-tile>
       <mat-grid-tile>
+        <mat-list>
+            <mat-list-item> Gender: {{getGender().display}} </mat-list-item>
+        </mat-list>
+    </mat-grid-tile>
+      <mat-grid-tile>
           <mat-list>
               <mat-list-item> MRN: 123456 </mat-list-item>
           </mat-list>
@@ -81,9 +86,9 @@
           <mat-icon>build</mat-icon>           
           Investigations    
         </mat-button-toggle>   
-        <mat-button-toggle matTooltip="Not implemented in this demo" disabled value="patient-summary" aria-label="Immunizations">
+        <mat-button-toggle matTooltip="Not implemented in this demo" disabled value="patient-summary" aria-label="Immunisations">
           <mat-icon>build</mat-icon> 
-          Immunizations    
+          Immunisations    
         </mat-button-toggle>        
         <mat-button-toggle value="patient-summary" aria-label="Patient Details" (change)="sideMenuChanged($event)">
           Patient Summary    
@@ -94,10 +99,28 @@
         <mat-button-toggle disabled>  
           &nbsp; 
         </mat-button-toggle>
+        <mat-button-toggle value="search-comparisons" aria-label="Search Comparisons" (change)="sideMenuChanged($event)">
+          Search Comparisons    
+        </mat-button-toggle>
+        <mat-button-toggle value="pedigree-editor" aria-label="Pedigree Editor" (change)="sideMenuChanged($event)">
+          Pedigree Editor    
+        </mat-button-toggle>
+        <mat-button-toggle value="pedigree-editor-pre-canned" aria-label="Pedigree Editor with example data" (change)="sideMenuChanged($event)">
+          Pedigree Editor (with Example Data)
+        </mat-button-toggle>
       </mat-button-toggle-group>
       
       <div>
-        <img class="centred-image" src="./assets/images/snomedIntl-brand-RGB-120px.jpg">
+        <img class="centred-image" src="./assets/images/CSIRO_Solid_CMYK_140px.jpg">
+      </div>
+      <br>
+      <div>
+        <img class="centred-image" src="./assets/images/aehrc logo_120px.PNG">
+      </div>
+      <br>
+      Powered by <i>Ontoserver</i>
+      <div>
+        <img class="centred-image" src="./assets/images/ontoserver_120px.png">
       </div>
     </mat-sidenav>
 
@@ -106,7 +129,13 @@
       <app-encounter-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'encounter'"></app-encounter-frame>
       <app-reaction-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'allergies-adverse-reactions'"></app-reaction-frame> 
       <app-patient-summary-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'patient-summary'"></app-patient-summary-frame>     
-  </mat-sidenav-content>
+      <app-search-compare-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'search-comparisons'"></app-search-compare-frame>   
+      
+      <!-- <iframe *ngIf="selectedMenuItem === 'pedigree-editor'" src="https://familypedigree.netlify.com/"></iframe> WORKS -->
+      
+      <iframe *ngIf="selectedMenuItem === 'pedigree-editor'" src="https://aehrc.github.io/panogram"></iframe>
+      <iframe *ngIf="selectedMenuItem === 'pedigree-editor-pre-canned'" src="https://aehrc.github.io/panogram/test_opener.html"></iframe>
+    </mat-sidenav-content>
   </mat-sidenav-container>
 
 </ng-container>

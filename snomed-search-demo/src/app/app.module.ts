@@ -12,6 +12,7 @@ import { EncounterFrameComponent } from './frames/encounter-frame/encounter-fram
 import { ReactionFrameComponent } from './frames/reaction-frame/reaction-frame.component';
 import { PatientDetailsFrameComponent } from './frames/patient-details-frame/patient-details-frame.component';
 import { PatientSummaryFrameComponent } from './frames/patient-summary-frame/patient-summary-frame.component';
+import { SearchCompareFrameComponent } from './frames/search-compare-frame/search-compare-frame.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { PatientSummaryFrameComponent } from './frames/patient-summary-frame/pat
     EncounterFrameComponent,
     ReactionFrameComponent,
     PatientDetailsFrameComponent,
-    PatientSummaryFrameComponent
+    PatientSummaryFrameComponent,
+    SearchCompareFrameComponent
   ],
   imports: [
     BrowserModule,

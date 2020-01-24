@@ -1,3 +1,20 @@
+table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+td.mat-badge.mat-badge-above:not(.mat-chip) .mat-badge-content:not(.mat-chip) {
+    top: 12px;
+    margin-left: -2px;
+}
+
+td.mat-badge.mat-badge-above:first-of-type .mat-badge-content:first-of-type {
+    left: 6px;
+}
+td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type {
+    padding-left: 28px;
+}
+
 .mat-badge-content {
     background: #00A9E0;
 }
@@ -42,4 +59,10 @@
 
 .mat-checkbox {
     margin-right: 10px;
+}
+
+.mat-raised-button {
+    background-color: #424463;
+    color: white;
+    height: 40px;
 }

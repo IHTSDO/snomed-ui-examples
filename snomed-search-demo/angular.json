@@ -22,7 +22,9 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/assets/images/snomedIntl-brand-RGB-120px.jpg"
+              "src/assets/images/aehrc logo_120px.PNG",
+              "src/assets/images/CSIRO_Solid_CMYK_140px.jpg",
+              "src/assets/images/ontoserver_120px.png"
             ],
             "styles": [
               "src/styles.css"

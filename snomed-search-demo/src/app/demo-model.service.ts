@@ -56,6 +56,15 @@ export interface Procedure {
   date: string;
 }
 
+export interface FamilyHistory {
+  relationshipCode: string;
+  relationshipDisplay: string;
+  problemCode: string;
+  problemDisplay: string;
+  onsetAge: number;
+  deceasedAge: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -76,7 +85,12 @@ export class DemoModelService {
   encounters: Encounter[] = [
   ];
 
+  familyHistory: FamilyHistory[] = [
+    {relationshipCode: '66839005', relationshipDisplay: 'Father', problemCode: '363418001', problemDisplay: 'Malignant tumour of pancreas', onsetAge: 72, deceasedAge: 72}
+  ];
+
   sex: SnomedConcept = {display:'Male',value: '248153007'};
+  gender: SnomedConcept = {display:'Male', value: '248153007'};
 
   constructor() { }
 
@@ -86,6 +100,14 @@ export class DemoModelService {
 
   setSex(sex : SnomedConcept) {
     this.sex = sex;
+  }
+
+  getGender() : SnomedConcept {
+    return this.gender;
+  }
+
+  setGender(gender : SnomedConcept) {
+    this.gender = gender;
   }
 
   getEncounters() : Encounter[] {
@@ -158,5 +180,14 @@ export class DemoModelService {
 
   addProblem(problemCode : string, problemDisplay: string, problemDate: string) {
     this.problems.push({code: problemCode, codeDisplay: problemDisplay, date: problemDate});
+  }
+
+  getFamilyHistory() : FamilyHistory[] {
+    return this.familyHistory;
+  }
+
+  addFamilyHistory(relationshipCode: string, relationshipDisplay: string, problemCode: string, problemDisplay: string, onsetAge: number, deceasedAge: number) {
+    this.familyHistory.push({relationshipCode: relationshipCode, relationshipDisplay: relationshipDisplay, problemCode: problemCode, problemDisplay: problemDisplay,
+      onsetAge: onsetAge, deceasedAge: deceasedAge});
   }
 }
