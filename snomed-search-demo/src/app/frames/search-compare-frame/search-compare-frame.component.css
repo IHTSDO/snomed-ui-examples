@@ -97,3 +97,7 @@ td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:
 ::ng-deep.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
     border-color:#00A9E0!important; /*outer ring color change*/
 }
+
+[hidden] {
+    display: none;
+}
