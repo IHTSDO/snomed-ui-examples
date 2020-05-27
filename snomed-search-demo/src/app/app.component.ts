@@ -21,11 +21,11 @@ export class AppComponent {
   httpSubscription;
 
   // set up default snomed server, also the selected server
-  snomedServer = "https://primarycare.ontoserver.csiro.au/fhir";
+  snomedServer = "https://r4.ontoserver.csiro.au/fhir";
 
   terminologyServers: string[] = [
     "https://primarycare.ontoserver.csiro.au/fhir"
-    //"https://r4.ontoserver.csiro.au/fhir"
+    "https://r4.ontoserver.csiro.au/fhir"
   ];
 
   selectedMenuItem = "encounter";
