@@ -24,7 +24,7 @@ export class AppComponent {
   snomedServer = "https://r4.ontoserver.csiro.au/fhir";
 
   terminologyServers: string[] = [
-    "https://primarycare.ontoserver.csiro.au/fhir"
+    "https://primarycare.ontoserver.csiro.au/fhir",
     "https://r4.ontoserver.csiro.au/fhir"
   ];
 
