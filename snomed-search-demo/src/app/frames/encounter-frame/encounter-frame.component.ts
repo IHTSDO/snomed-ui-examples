@@ -252,8 +252,14 @@ export class EncounterFrameComponent implements OnInit {
               }
               else {
                 var latDetails = data.expansion.contains[0];
-                this.encounterForm.get('laterality').setValue({value: latDetails['code'], display: latDetails['display']});
+                // A laterality value of "182353008 |Side (qualifier value)|" means the concept is lateralisable but not lateralised.
+                if (latDetails['code'] === "182353008") {
+                  this.encounterForm.get('laterality').setValue(null);
+                  this.encounterForm.get('laterality').enable();
+                } else {
+                  this.encounterForm.get('laterality').setValue({value: latDetails['code'], display: latDetails['display']});
                 }
+              }
             }
             else {
 
