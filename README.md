@@ -7,7 +7,7 @@ This repository can be run locally, or deployed as a GitHub Pages Website.  The 
 
 ## GitHub Pages
 
-(Substitue 'IHTSDO' for the name of your organisation in GithHub)
+(Substitue 'IHTSDO' for the name of your organisation in GitHub)
 
 1.	‘clone’ the ‘master’ branch locally and change directory into `snomed-ui-examples/snomed-search-demo`
 3.  If not already installed, `npm install -g @angular/cli`
