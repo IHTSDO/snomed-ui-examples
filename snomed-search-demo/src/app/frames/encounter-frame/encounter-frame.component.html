@@ -197,10 +197,10 @@
               Add
           </button>  
           <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on laterality"
-            [mdePopoverTriggerFor]="lateralityPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+            [mdePopoverTriggerFor]="addbuttonPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
             <b>i</b>
           </button>
-          <mde-popover #lateralityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+          <mde-popover #addbuttonPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
             <mat-card style="max-width: 600px">
               <mat-card-content>
                 The Add button is an example of how you could supply extra SNOMED CT concepts for fields where each
