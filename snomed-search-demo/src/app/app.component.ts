@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ValueSet} from 'fhir-stu3';
-import { MatDialog, MatTable } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTable } from '@angular/material/table';
 import { DemoModelService } from './demo-model.service';
 
 @Component({

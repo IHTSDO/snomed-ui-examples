@@ -5,7 +5,7 @@ import { debounceTime, distinctUntilChanged, tap, switchMap, finalize } from 'rx
 import { ValueSet } from 'fhir-stu3';
 import { DemoModelService, SnomedConcept } from 'src/app/demo-model.service';
 import { Subscription } from 'rxjs';
-import { MatAutocompleteTrigger } from '@angular/material';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-search-compare-frame',

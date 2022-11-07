@@ -6,7 +6,9 @@ import { debounceTime, distinctUntilChanged, tap, switchMap, finalize } from 'rx
 import { ValueSet } from 'fhir-stu3';
 import { DemoModelService, SnomedConcept } from 'src/app/demo-model.service';
 import { Subscription } from 'rxjs';
-import { MatTableDataSource, MatAutocomplete, MatChipInputEvent, MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-reaction-frame',

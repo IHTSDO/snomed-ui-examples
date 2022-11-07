@@ -5,7 +5,7 @@ import { debounceTime, distinctUntilChanged, tap, switchMap, finalize } from 'rx
 import { ValueSet } from 'fhir-stu3';
 import { DemoModelService} from 'src/app/demo-model.service';
 import { Subscription} from 'rxjs';
-import { MatTableDataSource} from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-encounter-frame',
