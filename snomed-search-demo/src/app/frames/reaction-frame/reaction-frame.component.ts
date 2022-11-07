@@ -162,8 +162,8 @@ export class ReactionFrameComponent implements OnInit {
   addOnBlur = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  @ViewChild('manifestationsInput', {static: false}) manifestationsInput: ElementRef<HTMLInputElement>;
-  @ViewChild('autoManifestation', {static: false}) matAutocomplete: MatAutocomplete;
+  @ViewChild('manifestationsInput') manifestationsInput: ElementRef<HTMLInputElement>;
+  @ViewChild('autoManifestation') matAutocomplete: MatAutocomplete;
 
   add(event: MatChipInputEvent): void {
     // Add  only when MatAutocomplete is not open
