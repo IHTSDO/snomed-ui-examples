@@ -14,7 +14,7 @@ export class AppComponent {
 
   @ViewChild('problemTable', {static:true}) problemTable: MatTable<any>;
   @ViewChild('vaccinationTable', {static:true}) vaccinationTable: MatTable<any>;
-  @ViewChild('investigationTable', {static:true}) investigationTable: MatTable<any>;
+  @ViewChild('pathologyInvestigationTable', {static:true}) pathologyInvestigationTable: MatTable<any>;
   @ViewChild('reactionTable',{static:true}) reactionTable: MatTable<any>;
   @ViewChild('medicationTable',{static:true}) medicationTable: MatTable<any>;
   @ViewChild('procedureTable',{static:true}) procedureTable: MatTable<any>;

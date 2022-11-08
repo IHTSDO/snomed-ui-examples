@@ -153,12 +153,11 @@
   
       </mat-card-content>
     </mat-card>
-  
-    <mat-card class="under-construction">
+
+    <!-- <mat-card class="under-construction">
       <mat-card-header>
         <div mat-card-avatar><mat-icon>build</mat-icon></div>
-        <!-- <div mat-card-avatar><mat-icon>search</mat-icon></div> -->
-        <mat-card-title>Investigations</mat-card-title>
+        <mat-card-title>Diagnostic Imaging</mat-card-title>
       </mat-card-header>
       <mat-card-content fxLayout="column">  
         <table mat-table fxFlex [dataSource]="investigationDataSource" class="mat-elevation-z8" #investigationTable class="under-construction"> 
@@ -180,6 +179,37 @@
   
           <tr mat-header-row *matHeaderRowDef="displayedInvestigationColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedInvestigationColumns;"></tr>
+        </table>
+      
+      </mat-card-content>
+    </mat-card> -->
+  
+    <mat-card class="under-construction">
+      <mat-card-header>
+        <div mat-card-avatar><mat-icon>build</mat-icon></div>
+        <!-- <div mat-card-avatar><mat-icon>search</mat-icon></div> -->
+        <mat-card-title>Pathology</mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="column">  
+        <table mat-table fxFlex [dataSource]="pathologyInvestigationDataSource" class="mat-elevation-z8" #pathologyInvestigationTable class="under-construction"> 
+          
+          <ng-container matColumnDef="test">
+            <th mat-header-cell class="under-construction" *matHeaderCellDef> Test </th>
+            <td mat-cell class="under-construction" *matCellDef="let pathologyInvestigation"> {{pathologyInvestigation.test}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="date">
+            <th mat-header-cell class="under-construction" *matHeaderCellDef> Date </th>
+            <td mat-cell class="under-construction" *matCellDef="let pathologyInvestigation"> {{pathologyInvestigation.date}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="result">
+              <th mat-header-cell class="under-construction" *matHeaderCellDef> Result </th>
+              <td mat-cell class="under-construction" *matCellDef="let pathologyInvestigation"> {{pathologyInvestigation.result}} </td>
+            </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedPathologyInvestigationColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedPathologyInvestigationColumns;"></tr>
         </table>
       
       </mat-card-content>

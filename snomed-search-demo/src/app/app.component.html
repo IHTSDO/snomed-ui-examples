@@ -108,10 +108,13 @@
           <mat-icon>build</mat-icon> 
           Medication    
         </mat-button-toggle>
-        <mat-button-toggle matTooltip="Not implemented in this demo" disabled value="patient-summary" aria-label="Investigations">
-          <mat-icon>build</mat-icon>           
-          Investigations    
+        <mat-button-toggle value="diagnostic-imaging" aria-label="Diagnostic Imaging" (change)="sideMenuChanged($event)">         
+          Diagnostic Imaging    
         </mat-button-toggle>   
+        <mat-button-toggle matTooltip="Not implemented in this demo" disabled value="patient-summary" aria-label="Medication">
+          <mat-icon>build</mat-icon> 
+          Pathology    
+        </mat-button-toggle>
         <mat-button-toggle matTooltip="Not implemented in this demo" disabled value="patient-summary" aria-label="Immunisations">
           <mat-icon>build</mat-icon> 
           Immunisations    
@@ -166,6 +169,7 @@
       <app-patient-details-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'patient-details'"></app-patient-details-frame> 
       <app-encounter-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'encounter'"></app-encounter-frame>
       <app-reaction-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'allergies-adverse-reactions'"></app-reaction-frame> 
+      <app-investigations-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'diagnostic-imaging'"></app-investigations-frame> 
       <app-patient-summary-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'patient-summary'"></app-patient-summary-frame>     
       <app-search-compare-frame snomedServer={{snomedServer}} *ngIf="selectedMenuItem === 'search-comparisons'"></app-search-compare-frame>   
       

@@ -13,12 +13,14 @@ import { ReactionFrameComponent } from './frames/reaction-frame/reaction-frame.c
 import { PatientDetailsFrameComponent } from './frames/patient-details-frame/patient-details-frame.component';
 import { PatientSummaryFrameComponent } from './frames/patient-summary-frame/patient-summary-frame.component';
 import { SearchCompareFrameComponent } from './frames/search-compare-frame/search-compare-frame.component';
+import { InvestigationsFrameComponent } from './frames/investigations-frame/investigations-frame.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EncounterFrameComponent,
     ReactionFrameComponent,
+    InvestigationsFrameComponent,
     PatientDetailsFrameComponent,
     PatientSummaryFrameComponent,
     SearchCompareFrameComponent

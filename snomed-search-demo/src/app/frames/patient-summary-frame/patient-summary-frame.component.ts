@@ -1,6 +1,6 @@
 import { Component, OnInit, Input} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DemoModelService, Vaccination, Investigation, Medication } from 'src/app/demo-model.service';
+import { DemoModelService, Vaccination, PathologyInvestigation, Medication } from 'src/app/demo-model.service';
 
 @Component({
   selector: 'app-patient-summary-frame',
@@ -32,12 +32,12 @@ export class PatientSummaryFrameComponent implements OnInit {
   displayedVaccinationColumns: string[] = ['name', 'brandName', 'substance', 'date'];
   vaccinationDataSource = this.vaccinationData;
 
-  // investigations
-  investigationData: Investigation[] = [
+  // pathology
+  pathologyInvestigationData: PathologyInvestigation[] = [
     {test: 'Cholesterol', date: '2019-08-22', result: '20'}
   ];
-  displayedInvestigationColumns: string[] = ['test', 'date', 'result'];
-  investigationDataSource = this.investigationData;
+  displayedPathologyInvestigationColumns: string[] = ['test', 'date', 'result'];
+  pathologyInvestigationDataSource = this.pathologyInvestigationData;
 
   displayedProcedureColumns: string[] = ['codeDisplay', 'date'];
   procedureDataSource = this.demoModelService.getProcedures();
