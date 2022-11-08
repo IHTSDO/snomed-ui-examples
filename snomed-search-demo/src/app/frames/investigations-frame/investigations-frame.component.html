@@ -9,7 +9,8 @@
 
       <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
         <mat-form-field appearance="outline" fxFlex>
-          <input type="text" placeholder="Presenting Problem" aria-label="Presenting Problem" matInput formControlName="presentingProblem" [matAutocomplete]="autoPresentingProblem">
+          <mat-label>Presenting Problem</mat-label>
+          <input type="text" aria-label="Presenting Problem" matInput formControlName="presentingProblem" [matAutocomplete]="autoPresentingProblem">
           <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>    
           <mat-autocomplete #autoPresentingProblem="matAutocomplete" [displayWith]="displayFn.bind(this)">
             <mat-option *ngFor="let option of filteredPresentingProblemValues" [value]="option">
@@ -18,7 +19,7 @@
           </mat-autocomplete>
         </mat-form-field>
 
-        <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on presenting problem"
+        <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on Presenting Problem"
           [mdePopoverTriggerFor]="presentingProblemPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
           <b>i</b>
         </button>
@@ -30,10 +31,10 @@
           </mat-card>
         </mde-popover>
       </div>
-   
       <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
         <mat-form-field appearance="outline" fxFlex>
-          <input type="text" placeholder="Modality" aria-label="Modality" matInput formControlName="modality" [matAutocomplete]="autoModality">
+          <mat-label>Modality</mat-label>
+          <input type="text" aria-label="Modality" matInput formControlName="modality" [matAutocomplete]="autoModality">
           <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>    
           <mat-autocomplete #autoModality="matAutocomplete" [displayWith]="displayFn.bind(this)">
             <mat-option *ngFor="let option of filteredModalityValues" [value]="option" (click)="onSelectModality(option)">
@@ -41,7 +42,7 @@
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on presenting problem"
+        <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on Modality"
           [mdePopoverTriggerFor]="modalityPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
           <b>i</b> 
         </button>
@@ -56,7 +57,8 @@
 
       <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
         <mat-form-field appearance="outline" fxFlex>
-          <input type="text" placeholder="Target Site" aria-label="Target Site" matInput formControlName="targetSite" [matAutocomplete]="autoTargetSite">
+          <mat-label>Target Site</mat-label>
+          <input type="text" aria-label="Target Site" matInput formControlName="targetSite" [matAutocomplete]="autoTargetSite">
           <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>    
           <mat-autocomplete #autoTargetSite="matAutocomplete" [displayWith]="displayFn.bind(this)">
             <mat-option *ngFor="let option of filteredTargetSiteValues" [value]="option">
@@ -97,13 +99,14 @@
         </div>
       </div>
 
-      <mat-grid-list cols="2" rowHeight="600px">
+      <mat-grid-list cols="2" rowHeight="350px" gutterSize="20px">
 
-        <mat-grid-tile>
-          <div class="form-row" fxLayout="column" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-grid-tile >
+          <div class="form-row" fxLayout="column" fxLayout.xs="column" fxLayoutGap="0px">
           <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="display: flex; align-items: flex-start;">
             <mat-form-field appearance="outline" fxFlex>
-              <input type="text" placeholder="DI Service Request" aria-label="Diagnostic Imaging Service Request" matInput formControlName="serviceRequest" [matAutocomplete]="autoServiceRequest">
+              <mat-label>DI Service Request</mat-label>
+              <input type="text" aria-label="Diagnostic Imaging Service Request" matInput formControlName="serviceRequest" [matAutocomplete]="autoServiceRequest">
               <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>    
               <mat-autocomplete #autoServiceRequest="matAutocomplete" [displayWith]="displayFn.bind(this)">
                 <!-- <mat-option *ngFor="let option of filteredServiceRequestValues" [value]="option">
@@ -112,7 +115,7 @@
               </mat-autocomplete>
 
             </mat-form-field>
-            <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on presenting problem"
+            <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on Diagnostic Imaging Service Request"
               [mdePopoverTriggerFor]="serviceRequestPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
               <b>i</b>
             </button>
@@ -126,7 +129,7 @@
 
           </div>
           <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="display: flex; align-items: flex-start;">
-            <mat-selection-list #options [multiple]="false" style="border-style: solid" fxFlex>
+            <mat-selection-list #options [multiple]="false" style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
               <mat-list-option *ngIf="filteredServiceRequestValues.length < 1">
                 -- no suggestions --
               </mat-list-option>
@@ -138,10 +141,11 @@
           </div>
         </mat-grid-tile>
         <mat-grid-tile>
-          <div class="form-row" fxLayout="column" fxLayout.xs="column" fxLayoutGap="20px">
+          <div class="form-row" fxLayout="column" fxLayout.xs="column" fxLayoutGap="0px">
           <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
             <mat-form-field appearance="outline" fxFlex>
-              <input type="text" placeholder="Contrast Material" aria-label="Presenting Problem" matInput formControlName="contrastMaterial" [matAutocomplete]="autoContrastMaterial">
+              <mat-label>Contrast Material</mat-label>
+              <input type="text" aria-label="Contrast Material" matInput formControlName="contrastMaterial" [matAutocomplete]="autoContrastMaterial">
               <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>    
               <mat-autocomplete #autoContrastMaterial="matAutocomplete" [displayWith]="displayFn.bind(this)">
                 <mat-option *ngFor="let option of filteredContrastMaterialValues" [value]="option">
@@ -156,17 +160,7 @@
             <mde-popover #contrastMaterialPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
               <mat-card style="max-width: 600px">
                 <mat-card-content>
-                  The Presenting Problem field is bound to the <b> http://aehrc.com/valueset/xxx
-                  “XXX” value set </b> developed for the Primary Care Data Quality Foundations work 
-                  program hosted on a FHIR-Based, SNOMED-CT terminology server. 
-                  <br><br>
-                  Options are filtered based on the user input and the field is implemented with an auto-complete component
-                  to limit user typing.
-                  <br><br>
-                  If the terminology server supports it, returned results can be limited by using <b>count=X</b>. This may prevent
-                  the sever from responding with a 'too costly' error and improve performance of the lookup and rendering.
-                  <br><br>
-                  If no options are retrieved, the field allows the user to enter their own value.
+                  XXX
               </mat-card-content>
               </mat-card>
             </mde-popover>
@@ -177,12 +171,15 @@
               <input matInput formControlName="additionalNotes"/>
             </mat-form-field>
           </div>
-          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="padding-bottom: 1.34375em">
             <!-- <mat-form-field appearance="outline" fxFlex>
               <mat-label>Extracted Modality</mat-label> -->
               <!-- <input placeholder="Extracted Modality" aria-label="Extracted Modality" matInput [readonly]="true" formControlName="extractedModality"/> -->
-              <mat-list style="border-style: solid" fxFlex>
-                <div mat-subheader>Extracted Modality</div>
+              <mat-list style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
+                <div mat-subheader>
+                  Extracted Modality
+                  <mat-spinner *ngIf="searchingExtractedModalityValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
+                </div>
                 <mat-list-item *ngFor="let value of extractedModalityValues"> {{ value.display }} </mat-list-item>
               </mat-list>
             <!-- </mat-form-field> -->
@@ -198,12 +195,15 @@
               </mat-card>
             </mde-popover>
           </div>
-          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="padding-bottom: 1.34375em">
             <!-- <mat-form-field appearance="outline" fxFlex>
               <mat-label>Extracted Site</mat-label> -->
               <!-- <input placeholder="Extracted Site" aria-label="Extracted Site" matInput [readonly]="true" formControlName="extractedSite"/> -->
-              <mat-list style="border-style: solid" fxFlex>
-                <div mat-subheader>Extracted Site</div>
+              <mat-list style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
+                <div mat-subheader>
+                  Extracted Site
+                <mat-spinner *ngIf="searchingExtractedSiteValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
+                </div>
                 <mat-list-item *ngFor="let value of extractedSiteValues"> {{ value.display }} </mat-list-item>
               </mat-list>
             <!-- </mat-form-field> -->
@@ -223,8 +223,11 @@
             <!-- <mat-form-field appearance="outline" fxFlex>
               <mat-label>Extracted Laterality</mat-label> -->
               <!-- <input placeholder="Extracted Laterality" aria-label="Extracted Laterality" matInput [readonly]="true" formControlName="extractedLaterality"/> -->
-              <mat-list style="border-style: solid" fxFlex>
-                <div mat-subheader>Extracted Laterality</div>
+              <mat-list style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
+                <div mat-subheader>
+                  Extracted Laterality
+                  <mat-spinner *ngIf="searchingExtractedLateralityValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
+                </div>
                 <mat-list-item *ngFor="let value of extractedLateralityValues"> {{ value.display }} </mat-list-item>
               </mat-list>
             <!-- </mat-form-field> -->

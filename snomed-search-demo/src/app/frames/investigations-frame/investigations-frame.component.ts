@@ -32,6 +32,9 @@ export class InvestigationsFrameComponent implements OnInit {
   extractedModalityValues: SnomedConcept[] = [];
   extractedSiteValues: SnomedConcept[] = [];
   extractedLateralityValues: SnomedConcept[] = [];
+  searchingExtractedModalityValues: boolean = false;
+  searchingExtractedSiteValues: boolean = false;
+  searchingExtractedLateralityValues: boolean = false;
 
   investigationsForm = new FormGroup({
     presentingProblem: new FormControl(''),
@@ -293,6 +296,10 @@ export class InvestigationsFrameComponent implements OnInit {
     this.extractedModalityValues = [];
     this.extractedSiteValues = [];
     this.extractedLateralityValues = [];
+
+    this.searchingExtractedModalityValues = true;
+    this.searchingExtractedSiteValues = true;
+    this.searchingExtractedLateralityValues = true;
     
     this.investigationsForm.get('extractedModality').setValue('');
     this.investigationsForm.get('extractedSite').setValue('');
@@ -318,9 +325,9 @@ export class InvestigationsFrameComponent implements OnInit {
             console.log("modality values", val);
             this.investigationsForm.get('extractedModality').setValue(val.display);
             this.extractedModalityValues.push({value: val.code, display: val.display});
-            //this.sexValues.push({value: val.code, display: val.display});
           })
         }
+        this.searchingExtractedModalityValues = false;
         modalitySubscription.unsubscribe();
       });
 
@@ -332,9 +339,9 @@ export class InvestigationsFrameComponent implements OnInit {
             console.log("site values", val)
             this.investigationsForm.get('extractedSite').setValue(val.display);
             this.extractedSiteValues.push({value: val.code, display: val.display});
-            //this.sexValues.push({value: val.code, display: val.display});
           })
         }
+        this.searchingExtractedSiteValues = false;
         siteSubscription.unsubscribe();
       });
 
@@ -346,9 +353,9 @@ export class InvestigationsFrameComponent implements OnInit {
             console.log("laterality values", val)
             this.investigationsForm.get('extractedLaterality').setValue(val.display);
             this.extractedLateralityValues.push({value: val.code, display: val.display});
-            //this.sexValues.push({value: val.code, display: val.display});
           })
         }
+        this.searchingExtractedLateralityValues = false;
         lateralitySubscription.unsubscribe();
       });
   }

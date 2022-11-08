@@ -102,11 +102,8 @@ td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:
     width: 100%;
 }
 
+/* set height of the service request and use scroll bars */
 mat-selection-list {
     max-height: 200px;
     overflow: auto;
-}
-
-.mat-pseudo-checkbox{
-    display: none !important;
 }
