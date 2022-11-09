@@ -104,6 +104,18 @@ td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:
 
 /* set height of the service request and use scroll bars */
 mat-selection-list {
-    max-height: 200px;
+    min-height: 410px;
+    max-height: 410px;
+    overflow: auto;
+}
+
+/* make font of list items the same as mat-form-field font */
+:host /deep/ .mat-list-item-content {
+    font-size: 14px;
+}
+
+#extractedModalityList, #extractedSiteList, #extractedLateralityList {
+    min-height: 100px;
+    max-height: 100px;
     overflow: auto;
 }

@@ -166,12 +166,16 @@ export class InvestigationsFrameComponent implements OnInit {
     var serviceRequestFilter;
     this.serviceRequestChangeSubscription = this.investigationsForm.get('serviceRequest').valueChanges
     .pipe(
+      tap((value) => {console.log("SR change triggered")}),
       debounceTime(500),
-      distinctUntilChanged(),
+      //distinctUntilChanged(),
       tap((value) => {
         serviceRequestFilter = (value instanceof Object) ? value.display : value;
       }),
-      switchMap(value => this.httpClient.get<ValueSet>(this.getServiceRequestURL(this.investigationsForm.get('modality').value.value, this.investigationsForm.get('targetSite').value.value, this.investigationsForm.get('side').value.value) + '&filter=' + serviceRequestFilter)
+      switchMap(value => this.httpClient.get<ValueSet>(this.getServiceRequestURL(
+        this.investigationsForm.get('modality').value.value, 
+        this.investigationsForm.get('targetSite').value.value, 
+        this.investigationsForm.get('side').value.value) + '&filter=' + serviceRequestFilter)
         .pipe(
           finalize(() => {
           }),
@@ -186,7 +190,9 @@ export class InvestigationsFrameComponent implements OnInit {
         });
       }
       else {
-        this.filteredServiceRequestValues.push({display: serviceRequestFilter, value: null});
+        if (serviceRequestFilter.trim().length !== 0) {
+          this.filteredServiceRequestValues.push({display: serviceRequestFilter, value: null});
+        }
       }
     });
 
@@ -216,6 +222,9 @@ export class InvestigationsFrameComponent implements OnInit {
         this.filteredContrastMaterialValues.push({display: contrastMaterialFilter, value: null});
       }
     });
+
+    // trigger initial population of list
+    this.investigationsForm.get('serviceRequest').setValue("");
   }
 
   ngOnDestroy() {
@@ -235,10 +244,6 @@ export class InvestigationsFrameComponent implements OnInit {
     // 
     // IF NO MODALITY, USE 363679005| Imaging (procedure)|
     // NEED A SITE AND A LATERALITY, OR JUST A SITE
-
-    console.log('modalityConceptID', modalityConceptID);
-    console.log("siteConceptID", siteConceptID);
-    console.log("lateralityConceptID", lateralityConceptID);
 
     let serviceRequestURL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
     + encodeURIComponent('?fhir_vs=ecl/');
@@ -285,10 +290,27 @@ export class InvestigationsFrameComponent implements OnInit {
     return equal;
   }
 
-  onSelectModality(selectedModality) {
-    // refresh the list of service requests
-
+  refreshServiceRequestList() {
+    this.filteredServiceRequestValues = [];
+    this.investigationsForm.get('serviceRequest').setValue("");
   }
+
+  onSelectModality(selectedModality) {
+    this.refreshServiceRequestList();
+  }
+
+  onSelectTargetSite(selectedTargetSite) {
+    this.refreshServiceRequestList();
+  }
+
+  onSelectLaterality(selectedLaterality) {
+    this.refreshServiceRequestList();
+  }
+
+  // do this if we want to force the dropdown to be immediately populated
+  // onClickTargetSite() {
+  //   this.investigationsForm.get('targetSite').setValue(this.investigationsForm.get('targetSite').value);
+  // }
 
   onSelectServiceRequest(selectedServiceRequest) {
     console.log("Service request selected", selectedServiceRequest);

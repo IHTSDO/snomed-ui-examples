@@ -59,9 +59,10 @@
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Target Site</mat-label>
           <input type="text" aria-label="Target Site" matInput formControlName="targetSite" [matAutocomplete]="autoTargetSite">
+            <!-- (click)="onClickTargetSite()"> -->
           <span matPrefix matTooltip="This field uses SNOMED CT" class="circle"><b>S</b></span>    
           <mat-autocomplete #autoTargetSite="matAutocomplete" [displayWith]="displayFn.bind(this)">
-            <mat-option *ngFor="let option of filteredTargetSiteValues" [value]="option">
+            <mat-option *ngFor="let option of filteredTargetSiteValues" [value]="option" (click)="onSelectTargetSite(option)">
               {{option.display}}
             </mat-option>
           </mat-autocomplete>
@@ -81,7 +82,7 @@
           <span matPrefix matTooltip="This field uses SNOMED CT" class="rb-circle"><b>S</b></span>
           <label class="mat-typography">Laterality: </label>
           <mat-radio-group formControlName="side">
-              <mat-radio-button *ngFor="let option of sideValues" [value]="option" matTooltip="SNOMED CT code: {{option.value}}">
+              <mat-radio-button *ngFor="let option of sideValues" [value]="option" matTooltip="SNOMED CT code: {{option.value}}" (click)="onSelectLaterality(option)">
                   {{option.display}}
               </mat-radio-button>
           </mat-radio-group>
@@ -99,7 +100,7 @@
         </div>
       </div>
 
-      <mat-grid-list cols="2" rowHeight="350px" gutterSize="20px">
+      <mat-grid-list cols="2" rowHeight="500px" gutterSize="20px">
 
         <mat-grid-tile >
           <div class="form-row" fxLayout="column" fxLayout.xs="column" fxLayoutGap="0px">
@@ -130,7 +131,7 @@
           </div>
           <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="display: flex; align-items: flex-start;">
             <mat-selection-list #options [multiple]="false" style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
-              <mat-list-option *ngIf="filteredServiceRequestValues.length < 1">
+              <mat-list-option *ngIf="filteredServiceRequestValues.length < 1" [disabled]="true">
                 -- no suggestions --
               </mat-list-option>
               <mat-list-option *ngFor="let option of filteredServiceRequestValues" [value]="option.value" (click)="onSelectServiceRequest(option)">
@@ -172,17 +173,13 @@
             </mat-form-field>
           </div>
           <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="padding-bottom: 1.34375em">
-            <!-- <mat-form-field appearance="outline" fxFlex>
-              <mat-label>Extracted Modality</mat-label> -->
-              <!-- <input placeholder="Extracted Modality" aria-label="Extracted Modality" matInput [readonly]="true" formControlName="extractedModality"/> -->
-              <mat-list style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
-                <div mat-subheader>
-                  Extracted Modality
-                  <mat-spinner *ngIf="searchingExtractedModalityValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
-                </div>
-                <mat-list-item *ngFor="let value of extractedModalityValues"> {{ value.display }} </mat-list-item>
-              </mat-list>
-            <!-- </mat-form-field> -->
+            <mat-list id="extractedModalityList" style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
+              <div mat-subheader>
+                Extracted Modality
+                <mat-spinner *ngIf="searchingExtractedModalityValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
+              </div>
+              <mat-list-item *ngFor="let value of extractedModalityValues"> {{ value.display }} </mat-list-item>
+            </mat-list>
             <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on Extracted Modality"
               [mdePopoverTriggerFor]="extractedModalityPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
               <b>i</b>
@@ -196,17 +193,13 @@
             </mde-popover>
           </div>
           <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="padding-bottom: 1.34375em">
-            <!-- <mat-form-field appearance="outline" fxFlex>
-              <mat-label>Extracted Site</mat-label> -->
-              <!-- <input placeholder="Extracted Site" aria-label="Extracted Site" matInput [readonly]="true" formControlName="extractedSite"/> -->
-              <mat-list style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
-                <div mat-subheader>
-                  Extracted Site
-                <mat-spinner *ngIf="searchingExtractedSiteValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
-                </div>
-                <mat-list-item *ngFor="let value of extractedSiteValues"> {{ value.display }} </mat-list-item>
-              </mat-list>
-            <!-- </mat-form-field> -->
+            <mat-list id="extractedSiteList" style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
+              <div mat-subheader>
+                Extracted Site
+              <mat-spinner *ngIf="searchingExtractedSiteValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
+              </div>
+              <mat-list-item *ngFor="let value of extractedSiteValues"> {{ value.display }} </mat-list-item>
+            </mat-list>
             <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on Extracted Site"
               [mdePopoverTriggerFor]="extractedSitePopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
               <b>i</b>
@@ -220,17 +213,13 @@
             </mde-popover>
           </div>
           <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
-            <!-- <mat-form-field appearance="outline" fxFlex>
-              <mat-label>Extracted Laterality</mat-label> -->
-              <!-- <input placeholder="Extracted Laterality" aria-label="Extracted Laterality" matInput [readonly]="true" formControlName="extractedLaterality"/> -->
-              <mat-list style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
-                <div mat-subheader>
-                  Extracted Laterality
-                  <mat-spinner *ngIf="searchingExtractedLateralityValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
-                </div>
-                <mat-list-item *ngFor="let value of extractedLateralityValues"> {{ value.display }} </mat-list-item>
-              </mat-list>
-            <!-- </mat-form-field> -->
+            <mat-list id="extractedLateralityList" style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
+              <div mat-subheader>
+                Extracted Laterality
+                <mat-spinner *ngIf="searchingExtractedLateralityValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
+              </div>
+              <mat-list-item *ngFor="let value of extractedLateralityValues"> {{ value.display }} </mat-list-item>
+            </mat-list>
             <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on Extracted Laterality"
               [mdePopoverTriggerFor]="extractedLateralityPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
               <b>i</b>
