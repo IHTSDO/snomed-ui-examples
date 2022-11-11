@@ -243,12 +243,12 @@ export class InvestigationsFrameComponent implements OnInit {
     // AND (ANY:405813007|ProcedureSite-Direct|=(~TARGETSITE~:272741003|Laterality|=~LATERALITYVALUE~))
     // 
     // IF NO MODALITY, USE 363679005| Imaging (procedure)|
-    // NEED A SITE AND A LATERALITY, OR JUST A SITE
-
+    
     let serviceRequestURL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
     + encodeURIComponent('?fhir_vs=ecl/');
 
     let ecl = '(<<';
+
     if (modalityConceptID) {
       ecl += modalityConceptID;
     }
@@ -257,18 +257,25 @@ export class InvestigationsFrameComponent implements OnInit {
     }
     ecl += ') '
 
-    if (siteConceptID) {
-      ecl += '{{ term = "term"}} AND (ANY:405813007|ProcedureSite-Direct|=(' + siteConceptID;
+    //Some "magic" to handle bilaterality in ECL
+    //No concept is actually modelled with the 51440002|left and right| concept
+    //Check that there is at least two procedure sites, with left/right.
+    //not ideal, some more complex logic around composing the ECL would be better, but more complex
+    let bilateralCardinality = '';
+    if (lateralityConceptID=='51440002') {
+      bilateralCardinality = '[2..*]'
+      lateralityConceptID ='(7771000|Left| or 24028007|Right|)';
     }
 
+    // Can handle any combination of site and/or laterality.
     if (siteConceptID && lateralityConceptID) {
-      ecl +=  ':272741003|Laterality|=' + lateralityConceptID;
+      ecl += 'AND (<<363679005|Imaging|:'+bilateralCardinality+'405813007|ProcedureSite-Direct|=(<<' + siteConceptID + ':272741003|Laterality|=' + lateralityConceptID +'))';
+    } else if (siteConceptID) {
+      ecl += 'AND (<<363679005|Imaging|:'+bilateralCardinality+'405813007|ProcedureSite-Direct|=(<<' + siteConceptID + '))';
+    } else if (lateralityConceptID) {
+      ecl += 'AND (<<363679005|Imaging|:'+bilateralCardinality+'405813007|ProcedureSite-Direct|=(<<123037004|BodyStructure|'+ ':272741003|Laterality|=' + lateralityConceptID +'))';
     }
 
-    if (siteConceptID) {
-      ecl += '))';
-    }
-    
     serviceRequestURL += encodeURIComponent(ecl) + '&count=20&includeDesignations=true';
 
     console.log("serviceRequestURL", serviceRequestURL);
@@ -328,11 +335,11 @@ export class InvestigationsFrameComponent implements OnInit {
     this.investigationsForm.get('extractedLaterality').setValue('');
 
     const EXTRACT_MODALITY_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
-    + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('(>' + selectedServiceRequest.value + 'AND <363680008|Imaging|):[1..1]ANY=ANY')
+    + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('('+selectedServiceRequest.value+'.260686004) AND <<360037004|Imaging - action (qualifier value)|')
     + '&count=20&includeDesignations=true';
 
     const EXTRACT_SITE_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
-    + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('((' + selectedServiceRequest.value + '.405813007|ProcedureSite-Direct|):[0..0]272741003|Laterality|=ANY) OR ((' + selectedServiceRequest.value + '.405813007|ProcedureSite-Direct|):272741003|Laterality|=182353008|Side|)')
+    + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('((' + selectedServiceRequest.value + '.405813007|ProcedureSite-Direct|))')
     + '&count=20&includeDesignations=true';
 
     const EXTRACT_LATERALITY_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
