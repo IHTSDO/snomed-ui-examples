@@ -85,7 +85,7 @@ export class DemoModelService {
   ];
 
   diagnosticImagingInvestigations: DiagnosticImagingInvestigation[] = [
-    {presentingProblemCode: 'XXXX', presentingProblemDisplay: 'XXXXX', serviceRequestCode: '75540009', serviceRequestDisplay: 'High', contrastMaterialCode : 'XXXXX', contrastMaterialDisplay: 'XXXXXX', additionalNotes: 'XXXXX'},
+    {presentingProblemCode: '30561011000036101', presentingProblemDisplay: 'Chronic cough', serviceRequestCode: '399208008', serviceRequestDisplay: 'Plain chest X-ray', contrastMaterialCode : '', contrastMaterialDisplay: '', additionalNotes: 'cough since April. Hx of travel SE Asia'},
   ]
 
   procedures: Procedure[] = [
