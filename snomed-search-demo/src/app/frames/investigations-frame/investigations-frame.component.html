@@ -26,7 +26,7 @@
         <mde-popover #presentingProblemPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
           <mat-card style="max-width: 600px">
             <mat-card-content>
-              XXX
+              Details of why the patient is requiring the diagnostic investigation
           </mat-card-content>
           </mat-card>
         </mde-popover>
@@ -49,7 +49,9 @@
         <mde-popover #modalityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
           <mat-card style="max-width: 600px">
             <mat-card-content>
-              XXX
+              The desired modality of the investigation.
+              The available values here are limited to those in the "Australian Radiology Procedure" value set, developed by RANZCR.
+              Any modality selected here is used to filter the options presented in the "DI Service Request" list below.
           </mat-card-content>
           </mat-card>
         </mde-popover>
@@ -74,7 +76,9 @@
         <mde-popover #targetSitePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
           <mat-card style="max-width: 600px">
             <mat-card-content>
-              XXX
+              The focus anatomical site for the diagnostic investigation. 
+              The available values here are limited to those in the "Australian Radiology Service Site" value set, developed by RANZCR.
+              Any target site selected here is used to filter the options presented in the "DI Service Request" list below.
           </mat-card-content>
           </mat-card>
         </mde-popover>
@@ -93,7 +97,9 @@
           <mde-popover #sidePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
             <mat-card style="max-width: 600px">
               <mat-card-content>
-                XXX
+                Laterality options. These values are hard coded into the UI.
+
+                Any laterality value selected here is used to filter the options presented in the "DI Service Request" list below.
              </mat-card-content>
             </mat-card>
           </mde-popover>
@@ -123,7 +129,11 @@
             <mde-popover #serviceRequestPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
               <mat-card style="max-width: 600px">
                 <mat-card-content>
-                  XXX
+                  Comprehensive list of possible Diagnostic Imaging Investigations.
+
+                  Current set is limited only to subtypes of 363679005|Imaging (procedure)| within SNOMED CT.
+
+                  The options available, are filtered using any combination of any search text as well as any previously selected values from Modality, Target Site and Laterality above.
               </mat-card-content>
               </mat-card>
             </mde-popover>
@@ -161,7 +171,8 @@
             <mde-popover #contrastMaterialPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
               <mat-card style="max-width: 600px">
                 <mat-card-content>
-                  XXX
+                  Potential options of contrast material.
+                  The search constraint is only limited to current subtypes of 385420005|Contrast media (substance)|.
               </mat-card-content>
               </mat-card>
             </mde-popover>
@@ -172,7 +183,8 @@
               <input matInput formControlName="additionalNotes"/>
             </mat-form-field>
           </div>
-          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="padding-bottom: 1.34375em">
+          Extracted attributes - (Read Only)
+          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="padding-bottom: 1.34375em" >
             <mat-list id="extractedModalityList" style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
               <div mat-subheader>
                 Extracted Modality
@@ -187,7 +199,7 @@
             <mde-popover #extractedModalityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
               <mat-card style="max-width: 600px">
                 <mat-card-content>
-                  XXXX
+                  Extracted modality from the selected DI Service Request. Values provided are depended on the SNOMED CT concept model definitions, and are limited to subtypes of 360037004|Imaging - action (qualifier value)|
                 </mat-card-content>
               </mat-card>
             </mde-popover>
@@ -207,7 +219,7 @@
             <mde-popover #extractedSitePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
               <mat-card style="max-width: 600px">
                 <mat-card-content>
-                  XXXX
+                  Extracted anatomical site from the selected DI Service Request. Values provided are dependant on the SNOMED CT concept model definitions. May include laterality.
                 </mat-card-content>
               </mat-card>
             </mde-popover>
@@ -227,7 +239,7 @@
             <mde-popover #extractedLateralityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
               <mat-card style="max-width: 600px">
                 <mat-card-content>
-                  XXXX
+                  Extracted laterality values from the selected DI Service Request. Values provided are dependant on the SNOMED CT concept model definitions.
                 </mat-card-content>
               </mat-card>
             </mde-popover>
