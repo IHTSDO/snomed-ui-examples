@@ -47,7 +47,10 @@ export class InvestigationsFrameComponent implements OnInit {
     extractedModality: new FormControl({value: '', disabled: true}),
     extractedSite: new FormControl({value: '', disabled: true}),
     extractedLaterality: new FormControl({value: '', disabled: true}),
+    selectedServiceRequest: new FormControl([]),
   });
+
+  initialInvestigationFormValues = this.investigationsForm.value;
 
   presentingProblemChangeSubsciption : Subscription;
   modalityChangeSubscription: Subscription;
@@ -72,10 +75,6 @@ export class InvestigationsFrameComponent implements OnInit {
 
     const TARGET_SITE_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('https://www.ranzcr.com/fhir/ValueSet/Radiology-Service-Site') 
     + '&count=20&includeDesignations=true';
-
-    // const SERVICE_REQUEST_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
-    // + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 363679005')
-    // + '&count=20&includeDesignations=true';
 
     const CONTRAST_MATERIAL_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
     + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('<< 385420005')
@@ -166,9 +165,8 @@ export class InvestigationsFrameComponent implements OnInit {
     var serviceRequestFilter;
     this.serviceRequestChangeSubscription = this.investigationsForm.get('serviceRequest').valueChanges
     .pipe(
-      tap((value) => {console.log("SR change triggered")}),
       debounceTime(500),
-      //distinctUntilChanged(),
+      //distinctUntilChanged(), .. this prevents us from setting value to '' to reset prepopulation
       tap((value) => {
         serviceRequestFilter = (value instanceof Object) ? value.display : value;
       }),
@@ -278,7 +276,6 @@ export class InvestigationsFrameComponent implements OnInit {
 
     serviceRequestURL += encodeURIComponent(ecl) + '&count=20&includeDesignations=true';
 
-    console.log("serviceRequestURL", serviceRequestURL);
     return serviceRequestURL;
   }
 
@@ -320,7 +317,6 @@ export class InvestigationsFrameComponent implements OnInit {
   // }
 
   onSelectServiceRequest(selectedServiceRequest) {
-    console.log("Service request selected", selectedServiceRequest);
 
     this.extractedModalityValues = [];
     this.extractedSiteValues = [];
@@ -348,10 +344,8 @@ export class InvestigationsFrameComponent implements OnInit {
 
     var modalitySubscription = this.httpClient.get<ValueSet>(EXTRACT_MODALITY_URL)
       .subscribe(result => {
-        console.log("result", result);
         if (result.expansion.contains) {
           result.expansion.contains.forEach(val => {
-            console.log("modality values", val);
             this.investigationsForm.get('extractedModality').setValue(val.display);
             this.extractedModalityValues.push({value: val.code, display: val.display});
           })
@@ -362,10 +356,8 @@ export class InvestigationsFrameComponent implements OnInit {
 
     var siteSubscription = this.httpClient.get<ValueSet>(EXTRACT_SITE_URL)
       .subscribe(result => {
-        console.log("result", result);
         if (result.expansion.contains) {
           result.expansion.contains.forEach(val => {
-            console.log("site values", val)
             this.investigationsForm.get('extractedSite').setValue(val.display);
             this.extractedSiteValues.push({value: val.code, display: val.display});
           })
@@ -376,10 +368,8 @@ export class InvestigationsFrameComponent implements OnInit {
 
     var lateralitySubscription = this.httpClient.get<ValueSet>(EXTRACT_LATERALITY_URL)
       .subscribe(result => {
-        console.log("result", result);
         if (result.expansion.contains) {
           result.expansion.contains.forEach(val => {
-            console.log("laterality values", val)
             this.investigationsForm.get('extractedLaterality').setValue(val.display);
             this.extractedLateralityValues.push({value: val.code, display: val.display});
           })
@@ -394,8 +384,8 @@ export class InvestigationsFrameComponent implements OnInit {
     this.demoModelService.addDiagnosticImagingInvestigation(
       this.investigationsForm.get('presentingProblem').value ? this.investigationsForm.get('presentingProblem').value.value : null,
       this.investigationsForm.get('presentingProblem').value ? this.investigationsForm.get('presentingProblem').value.display : null,     
-      this.investigationsForm.get('serviceRequest').value ? this.investigationsForm.get('serviceRequest').value.value : null,
-      this.investigationsForm.get('serviceRequest').value ? this.investigationsForm.get('serviceRequest').value.display : null,
+      this.investigationsForm.get('selectedServiceRequest').value && this.investigationsForm.get('selectedServiceRequest').value[0] ? this.investigationsForm.get('selectedServiceRequest').value[0].value : null,
+      this.investigationsForm.get('selectedServiceRequest').value && this.investigationsForm.get('selectedServiceRequest').value[0] ? this.investigationsForm.get('selectedServiceRequest').value[0].display : null,
       this.investigationsForm.get('contrastMaterial').value ? this.investigationsForm.get('contrastMaterial').value.value : null,
       this.investigationsForm.get('contrastMaterial').value ? this.investigationsForm.get('contrastMaterial').value.display : null, 
       this.investigationsForm.get('additionalNotes').value,
@@ -404,14 +394,21 @@ export class InvestigationsFrameComponent implements OnInit {
     // cause table refresh
     this.diagnosticImagingInvestigationDataSource = new MatTableDataSource(this.demoModelService.getDiagnosticImagingInvestigations());
     
-    // empty fields for diagnostic imaging investigation to be added
-    this.investigationsForm.reset({ side: this.sideValues[0] });
+    // empty fields
+    this.investigationsForm.reset(this.initialInvestigationFormValues); 
+
+    this.extractedModalityValues = [];
+    this.extractedSiteValues = [];
+    this.extractedLateralityValues = [];
 
     this.filteredPresentingProblemValues = [];
     this.filteredModalityValues = [];
     this.filteredTargetSiteValues = [];
     this.filteredServiceRequestValues = [];
     this.filteredContrastMaterialValues = [];
+
+    // trigger initial population of list
+    this.investigationsForm.get('serviceRequest').setValue("");
 
   }
 

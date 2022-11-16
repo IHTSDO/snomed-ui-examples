@@ -90,7 +90,6 @@ export class SearchCompareFrameComponent implements OnInit {
       
     this.searchTypeChangeSubscription = this.searchComparisonForm.get('searchType').valueChanges
       .subscribe(searchType => {
-        console.log("new search type is", searchType);
 
         switch (searchType) {
           case "multipleDescriptions": {

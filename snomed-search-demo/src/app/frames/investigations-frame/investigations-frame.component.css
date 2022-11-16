@@ -104,8 +104,8 @@ td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:
 
 /* set height of the service request and use scroll bars */
 mat-selection-list {
-    min-height: 410px;
-    max-height: 410px;
+    min-height: 480px;
+    max-height: 480px;
     overflow: auto;
 }
 

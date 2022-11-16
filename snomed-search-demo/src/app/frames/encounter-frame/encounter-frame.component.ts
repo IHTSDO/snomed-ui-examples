@@ -252,7 +252,6 @@ export class EncounterFrameComponent implements OnInit {
           + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent(procedure.value + '.<< 363704007.272741003'))
            .subscribe(data => {
             if (data.expansion.contains) {
-              console.log("laterality info", data.expansion.contains)
               this.encounterForm.get('laterality').disable();
               if (data.expansion.contains.length > 1) {
                 // left and right

@@ -106,7 +106,7 @@
         </div>
       </div>
 
-      <mat-grid-list cols="2" rowHeight="500px" gutterSize="20px">
+      <mat-grid-list cols="2" rowHeight="580px" gutterSize="20px">
 
         <mat-grid-tile >
           <div class="form-row" fxLayout="column" fxLayout.xs="column" fxLayoutGap="0px">
@@ -140,11 +140,11 @@
 
           </div>
           <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="display: flex; align-items: flex-start;">
-            <mat-selection-list #options [multiple]="false" style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
+            <mat-selection-list #options [multiple]="false" formControlName="selectedServiceRequest" style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
               <mat-list-option *ngIf="filteredServiceRequestValues.length < 1" [disabled]="true">
                 -- no suggestions --
               </mat-list-option>
-              <mat-list-option *ngFor="let option of filteredServiceRequestValues" [value]="option.value" (click)="onSelectServiceRequest(option)">
+              <mat-list-option *ngFor="let option of filteredServiceRequestValues" [value]="option" (click)="onSelectServiceRequest(option)">
                 {{option.display}}
               </mat-list-option>
             </mat-selection-list>
@@ -183,72 +183,78 @@
               <input matInput formControlName="additionalNotes"/>
             </mat-form-field>
           </div>
-          Extracted attributes - (Read Only)
-          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="padding-bottom: 1.34375em" >
-            <mat-list id="extractedModalityList" style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
-              <div mat-subheader>
-                Extracted Modality
-                <mat-spinner *ngIf="searchingExtractedModalityValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
+
+          <mat-card class="mat-elevation-z0">
+            <mat-card-subtitle>Extracted attributes - (Read Only)</mat-card-subtitle>
+            <mat-card-content>
+              <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="padding-bottom: 1.34375em" >
+                <mat-list id="extractedModalityList" style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
+                  <div mat-subheader>
+                    Extracted Modality
+                    <mat-spinner *ngIf="searchingExtractedModalityValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
+                  </div>
+                  <mat-list-item *ngFor="let value of extractedModalityValues"> {{ value.display }} </mat-list-item>
+                </mat-list>
+                <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on Extracted Modality"
+                  [mdePopoverTriggerFor]="extractedModalityPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+                  <b>i</b>
+                </button>
+                <mde-popover #extractedModalityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+                  <mat-card style="max-width: 600px">
+                    <mat-card-content>
+                      Extracted modality from the selected DI Service Request. Values provided are depended on the SNOMED CT concept model definitions, and are limited to subtypes of 360037004|Imaging - action (qualifier value)|
+                    </mat-card-content>
+                  </mat-card>
+                </mde-popover>
               </div>
-              <mat-list-item *ngFor="let value of extractedModalityValues"> {{ value.display }} </mat-list-item>
-            </mat-list>
-            <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on Extracted Modality"
-              [mdePopoverTriggerFor]="extractedModalityPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
-              <b>i</b>
-            </button>
-            <mde-popover #extractedModalityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
-              <mat-card style="max-width: 600px">
-                <mat-card-content>
-                  Extracted modality from the selected DI Service Request. Values provided are depended on the SNOMED CT concept model definitions, and are limited to subtypes of 360037004|Imaging - action (qualifier value)|
-                </mat-card-content>
-              </mat-card>
-            </mde-popover>
-          </div>
-          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="padding-bottom: 1.34375em">
-            <mat-list id="extractedSiteList" style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
-              <div mat-subheader>
-                Extracted Site
-              <mat-spinner *ngIf="searchingExtractedSiteValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
+              <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="padding-bottom: 1.34375em">
+                <mat-list id="extractedSiteList" style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
+                  <div mat-subheader>
+                    Extracted Site
+                  <mat-spinner *ngIf="searchingExtractedSiteValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
+                  </div>
+                  <mat-list-item *ngFor="let value of extractedSiteValues"> {{ value.display }} </mat-list-item>
+                </mat-list>
+                <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on Extracted Site"
+                  [mdePopoverTriggerFor]="extractedSitePopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+                  <b>i</b>
+                </button>
+                <mde-popover #extractedSitePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+                  <mat-card style="max-width: 600px">
+                    <mat-card-content>
+                      Extracted anatomical site from the selected DI Service Request. Values provided are dependant on the SNOMED CT concept model definitions. May include laterality.
+                    </mat-card-content>
+                  </mat-card>
+                </mde-popover>
               </div>
-              <mat-list-item *ngFor="let value of extractedSiteValues"> {{ value.display }} </mat-list-item>
-            </mat-list>
-            <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on Extracted Site"
-              [mdePopoverTriggerFor]="extractedSitePopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
-              <b>i</b>
-            </button>
-            <mde-popover #extractedSitePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
-              <mat-card style="max-width: 600px">
-                <mat-card-content>
-                  Extracted anatomical site from the selected DI Service Request. Values provided are dependant on the SNOMED CT concept model definitions. May include laterality.
-                </mat-card-content>
-              </mat-card>
-            </mde-popover>
-          </div>
-          <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
-            <mat-list id="extractedLateralityList" style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
-              <div mat-subheader>
-                Extracted Laterality
-                <mat-spinner *ngIf="searchingExtractedLateralityValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
+              <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+                <mat-list id="extractedLateralityList" style="border-radius: 5px; border: 1px solid lightgrey;" fxFlex>
+                  <div mat-subheader>
+                    Extracted Laterality
+                    <mat-spinner *ngIf="searchingExtractedLateralityValues" matSuffix [diameter]="18" style="float: right; margin-left: 8px"></mat-spinner>
+                  </div>
+                  <mat-list-item *ngFor="let value of extractedLateralityValues"> {{ value.display }} </mat-list-item>
+                </mat-list>
+                <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on Extracted Laterality"
+                  [mdePopoverTriggerFor]="extractedLateralityPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+                  <b>i</b>
+                </button>
+                <mde-popover #extractedLateralityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+                  <mat-card style="max-width: 600px">
+                    <mat-card-content>
+                      Extracted laterality values from the selected DI Service Request. Values provided are dependant on the SNOMED CT concept model definitions.
+                    </mat-card-content>
+                  </mat-card>
+                </mde-popover>
               </div>
-              <mat-list-item *ngFor="let value of extractedLateralityValues"> {{ value.display }} </mat-list-item>
-            </mat-list>
-            <button mat-mini-fab aria-label="click for info" matTooltip="Click for further info on Extracted Laterality"
-              [mdePopoverTriggerFor]="extractedLateralityPopover" mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
-              <b>i</b>
-            </button>
-            <mde-popover #extractedLateralityPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
-              <mat-card style="max-width: 600px">
-                <mat-card-content>
-                  Extracted laterality values from the selected DI Service Request. Values provided are dependant on the SNOMED CT concept model definitions.
-                </mat-card-content>
-              </mat-card>
-            </mde-popover>
-          </div>
+    
+            </mat-card-content>
+          </mat-card>
         </div>
         </mat-grid-tile>
       </mat-grid-list>
 
-      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+      <div class="form-row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" style="padding-top: 1.34375em">
         <button mat-raised-button (click)="onSaveDiagnosticImagingInvestigation()">
           <mat-icon>add</mat-icon> 
           Add 
