@@ -1,7 +1,7 @@
 import { Component, OnInit, Input} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, tap, switchMap, finalize } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, tap, switchMap, finalize, filter } from 'rxjs/operators';
 import { ValueSet } from 'fhir-stu3';
 import { DemoModelService} from 'src/app/demo-model.service';
 import { Subscription} from 'rxjs';
@@ -80,33 +80,33 @@ export class EncounterFrameComponent implements OnInit {
 
     const ENCOUNTER_REASON_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
     + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 404684003 OR < 71388002 OR < 243796009 OR < 272379006')
-    + '&count=20&includeDesignations=true';
+    + '&count=20';
 
     const DIAGNOSIS_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
     + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 404684003')
-    + '&count=20&includeDesignations=true';
+    + '&count=20';
 
     // should be a value set
     const PREFERRED_DIAGNOSIS_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
     + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('38341003 OR 195967001 OR 35489007 OR 48694002 OR ' +
     '73211009 OR 46635009 OR 44054006 OR 64859006 OR 49436004 OR 13645005 OR 414545008 OR 42343007 OR 230690007 OR ' +
     '13644009 OR 65323003 OR 85898001 OR 371125006 OR 70995007 OR 59621000 OR 233873004 OR 11687002 OR 66931009 OR ' +
-    '14140009 OR 34486009 OR 45007003 OR 89627008 OR 5291005 OR 40930008') + '&includeDesignations=true'
+    '14140009 OR 34486009 OR 45007003 OR 89627008 OR 5291005 OR 40930008') + ''
 
 
     const PROCEDURE_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
     + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 71388002')
-    + '&count=20&includeDesignations=true';
+    + '&count=20';
 
     const LATERALITY_URL = 	this.snomedServer + '/ValueSet/$expand?_format=json&url=' + encodeURIComponent('http://snomed.info/sct') 
-    + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 182353008') 
-    + '&includeDesignations=true';
+    + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('< 182353008');
 
     var encounterReasonFilter;
     this.encounterReasonChangeSubscription = this.encounterForm.get('reasonForEncounter').valueChanges
     .pipe(
       debounceTime(500),
       distinctUntilChanged(),
+      filter(value => typeof value === 'string' && value.length >= 3),
       tap((value) => {
         encounterReasonFilter = (value instanceof Object) ? value.display : value;
       }),
@@ -135,6 +135,7 @@ export class EncounterFrameComponent implements OnInit {
     .pipe(
       debounceTime(500),
       distinctUntilChanged(),
+      filter(value => typeof value === 'string' && value.length >= 3),
       tap((value) => {
         diagnosisFilter = (value instanceof Object) ? value.display : value;
 
@@ -182,6 +183,7 @@ export class EncounterFrameComponent implements OnInit {
     .pipe(
       debounceTime(500),
       distinctUntilChanged(),
+      filter(value => typeof value === 'string' && value.length >= 3),
       tap((value) => {
         procedureFilter = (value instanceof Object) ? value.display : value;
       }),
