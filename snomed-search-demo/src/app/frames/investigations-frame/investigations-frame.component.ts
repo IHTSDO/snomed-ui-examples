@@ -78,7 +78,7 @@ export class InvestigationsFrameComponent implements OnInit {
   //    + '&count=20&includeDesignations=true';
 
     const TARGET_SITE_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
-    + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent(' (<38866009{{ term != ("*entire*" "*part*" "*all*" "*Bone structure of*")}})')
+    + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent('(<38866009) AND (<363679005.<<405813007)')
     + '&count=20&includeDesignations=true';
 
     const CONTRAST_MATERIAL_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
