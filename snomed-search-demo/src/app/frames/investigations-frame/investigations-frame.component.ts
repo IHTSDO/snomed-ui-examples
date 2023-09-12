@@ -73,7 +73,12 @@ export class InvestigationsFrameComponent implements OnInit {
     const MODALITY_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('https://www.ranzcr.com/fhir/ValueSet/Radiology-Procedure') 
     + '&count=20&includeDesignations=true';
 
-    const TARGET_SITE_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('https://www.ranzcr.com/fhir/ValueSet/Radiology-Service-Site') 
+  // Original RANZCR Set, breaks with "Entire" codes.
+  //  const TARGET_SITE_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('https://www.ranzcr.com/fhir/ValueSet/Radiology-Service-Site') 
+  //    + '&count=20&includeDesignations=true';
+
+    const TARGET_SITE_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
+    + encodeURIComponent('?fhir_vs=ecl/') + encodeURIComponent(' (<38866009{{ term != ("*entire*" "*part*" "*all*" "*Bone structure of*")}})')
     + '&count=20&includeDesignations=true';
 
     const CONTRAST_MATERIAL_URL = this.snomedServer + '/ValueSet/$expand?url=' + encodeURIComponent('http://snomed.info/sct') 
