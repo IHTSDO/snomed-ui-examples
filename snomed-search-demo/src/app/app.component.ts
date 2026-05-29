@@ -21,10 +21,10 @@ export class AppComponent {
   httpSubscription;
 
   // set up default snomed server, also the selected server
-  snomedServer = "https://snowstorm-fhir.snomedtools.org/fhir";
+  snomedServer = "https://snomedbrowser.org/fhir";
 
   terminologyServers: string[] = [
-    "https://snowstorm-fhir.snomedtools.org/fhir",
+    "https://snomedbrowser.org/fhir",
     "https://r4.ontoserver.csiro.au/fhir"
   ];
 

@@ -34,7 +34,7 @@ Searching using words, part words or multiple part words
 
 **Searching using a whole word – &quot;migraine&quot;**
 
-1. Using the Snomed Terminology Server drop down, select the [https://snowstorm-fhir.snomedtools.org.fhir](https://snowstorm-fhir.snomedtools.org.fhir/) option
+1. Using the Snomed Terminology Server drop down, select the [https://snomedbrowser.org/fhir](https://snomedbrowser.org/fhir/) option
 
 ![](images/image008.png) 
 
@@ -72,7 +72,7 @@ Searching across all synonyms
 
 **Searching using common acronym of IBD**
 
-1. Using the Snomed Terminology Server drop down, select the [https://snowstorm-fhir.snomedtools.org.fhir](https://snowstorm-fhir.snomedtools.org.fhir/) option
+1. Using the Snomed Terminology Server drop down, select the [https://snomedbrowser.org/fhir](https://snomedbrowser.org/fhir/) option
 2. Select the &quot;Encounter&quot; section of the Demonstrator
 3. Select the &quot;Diagnosis&quot; field and enter &quot;ibd&quot;
 
@@ -80,7 +80,7 @@ Searching across all synonyms
 
 Using free-text when no appropriate SNOMED CT concept is available
 
-1. Using the Snomed Terminology Server drop down, select the [https://snowstorm-fhir.snomedtools.org.fhir](https://snowstorm-fhir.snomedtools.org.fhir/) option
+1. Using the Snomed Terminology Server drop down, select the [https://snomedbrowser.org/fhir](https://snomedbrowser.org/fhir/) option
 2. Select the &quot;Reason for Encounter&quot; field in the &quot;Encounter&quot; section of the Demonstrator
 3. Enter &quot;unable to breathe through nose&quot; in the &quot;Reason for Encounter&quot; field.
 
@@ -100,7 +100,7 @@ Using free-text when no appropriate SNOMED CT concept is available
 
 **Searching using Snowstorm terminology server – &quot;gord&quot;**
 
-1. Using the Snowstorm terminology server drop down, select the [https://snowstorm-fhir.snomedtools.org.fhir](https://snowstorm-fhir.snomedtools.org.fhir/) option
+1. Using the Snowstorm terminology server drop down, select the [https://snomedbrowser.org/fhir](https://snomedbrowser.org/fhir/) option
 2. Select the &quot;Encounter&quot; section of the Demonstrator
 3. Select the &quot;Diagnosis&quot; field and enter &quot;gord&quot;
 
@@ -117,7 +117,7 @@ Using free-text when no appropriate SNOMED CT concept is available
 
 **Search display using Snowstorm terminology server – &quot;acute COPD&quot;**
 
-1. Using the Snomed Terminology Server drop down, select the [https://snowstorm-fhir.snomedtools.org.fhir](https://snowstorm-fhir.snomedtools.org.fhir/) option
+1. Using the Snomed Terminology Server drop down, select the [https://snomedbrowser.org/fhir](https://snomedbrowser.org/fhir/) option
 2. Select the &quot;Encounter&quot; section of the Demonstrator
 3. Select the &quot;Diagnosis&quot; field and enter &quot;acute COPD&quot;
 
@@ -136,7 +136,7 @@ The Demonstrator contains a &quot;boost functionality&quot; which allows presele
 
 **Search for &quot;Type 1 diabetes mellitus&quot; without boosting**
 
-1. Using the Snomed Terminology Server drop down, select the [https://snowstorm-fhir.snomedtools.org.fhir](https://snowstorm-fhir.snomedtools.org.fhir/) option
+1. Using the Snomed Terminology Server drop down, select the [https://snomedbrowser.org/fhir](https://snomedbrowser.org/fhir/) option
 2. Select the &quot;Encounter&quot; section of the Demonstrator.
 3. Ensure that the &quot;boost&quot; toggle is off (circle will be white and on the left side). If it is on, click on it so the circle moves to the left.
 
@@ -161,7 +161,7 @@ The Demonstrator contains a &quot;boost functionality&quot; which allows presele
 
 **Using procedure site from a procedure to prefill a laterality field**
 
-1. Using the Snomed Terminology Server drop down, select the [https://snowstorm-fhir.snomedtools.org.fhir](https://snowstorm-fhir.snomedtools.org.fhir/) option
+1. Using the Snomed Terminology Server drop down, select the [https://snomedbrowser.org/fhir](https://snomedbrowser.org/fhir/) option
 2. Select the &quot;Encounter&quot; section of the Demonstrator
 3. Select the &quot;Procedure&quot; field and enter the term &quot;mastectomy&quot; and select &quot;Simple mastectomy (procedure)&quot; from the drop down list.
 
